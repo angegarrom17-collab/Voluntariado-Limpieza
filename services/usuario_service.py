@@ -1,10 +1,16 @@
+import hashlib
 from model.usuario import Usuario
 
 class UsuarioService:
     def __init__(self, usuario_repository):
         self.usuario_repository = usuario_repository
 
-    def registrar_usuario(self, id_usuario: int, nombre: str,
+    def _cifrar_contrasena(self, contrasena: str) -> str:
+        # SHA-256: convierte el texto de la contraseña en un hash
+        # para no guardar la contraseña legible en el JSON
+        return hashlib.sha256(contrasena.encode()).hexdigest()
+
+    def registrar_usuario(self, id_usuario: str, nombre: str,
                           correo: str, contrasena: str, tipo: str):
         if not nombre.strip():
             raise ValueError("El nombre no puede estar vacío")
@@ -13,9 +19,10 @@ class UsuarioService:
         if len(contrasena) < 6:
             raise ValueError("La contraseña debe tener al menos 6 caracteres")
         if tipo not in ["encargado"]:
-            raise ValueError("Tipo de usuario no válido")
+            raise ValueError("Tipo de usuario no válido. Solo se acepta: encargado")
 
-        usuario = Usuario(id_usuario, nombre, correo, contrasena, tipo)
+        contrasena_cifrada = self._cifrar_contrasena(contrasena)
+        usuario = Usuario(id_usuario, nombre, correo, contrasena_cifrada, tipo)
         self.usuario_repository.add(usuario)
 
     def iniciar_sesion(self, correo: str, contrasena: str) -> Usuario:
