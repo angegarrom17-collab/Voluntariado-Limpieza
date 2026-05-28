@@ -37,3 +37,5 @@ class MaterialService:
 
     def obtener_materiales(self):
         return self.material_repository.get_all()
+
+    
