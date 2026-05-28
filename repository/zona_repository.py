@@ -12,8 +12,8 @@ class ZonaRepository:
     def _load(self):
         if not os.path.exists(self.filename):
             return
-        with open(self.filename, "r", encoding="utf-8") as f:
-            data = json.load(f)
+        with open(self.filename, "r", encoding="utf-8") as archivo:
+            data = json.load(archivo)
         for item in data:
             zona = Zona.from_dict(item)
             self._zonas.append(zona)
@@ -21,8 +21,8 @@ class ZonaRepository:
 
     def _save(self):
         data = [zona.to_dict() for zona in self._zonas]
-        with open(self.filename, "w", encoding="utf-8") as f:
-            json.dump(data, f, indent=4, ensure_ascii=False)
+        with open(self.filename, "w", encoding="utf-8") as archivo:
+            json.dump(data, archivo, indent=4, ensure_ascii=False)
 
     def add(self, zona: Zona):
         if zona.id_zona in self._zonas_by_id:
@@ -36,6 +36,10 @@ class ZonaRepository:
 
     def get_all(self):
         return list(self._zonas)
+
+    def obtener_todos(self):
+        # Alias para compatibilidad con JornadaServicio y VoluntarioServicio
+        return [zona.to_dict() for zona in self._zonas]
 
     def exists(self, id_zona: int) -> bool:
         return id_zona in self._zonas_by_id
