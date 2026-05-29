@@ -8,14 +8,14 @@ RUTA_BASE = os.path.dirname(__file__)
 RUTA_BANNER = os.path.join(RUTA_BASE, "imagenes proyecto", "Lonely Whale.jpg")
 
 # --- CONFIGURACIÓN VISUAL ---
-COLOR_FONDO_CELESTE = "#96D4D6"  # ¡NUEVO! Celeste pastel suave para reemplazar el gris
-COLOR_TARJETA = "#FFFFFF"  # Blanco puro para que las tarjetas resalten
+COLOR_FONDO_CELESTE = "#96D4D6"
+COLOR_TARJETA = "#FFFFFF"
 COLOR_TEXTO_TITULO = "#1C2833"
 COLOR_TEXTO_MUTED = "#566573"
 COLOR_ENTRADA_TEXTO = "#2C3E50"
 
 # Botones Eco-Premium
-COLOR_BTN_REGISTRAR = "#5F7A61"
+COLOR_BTN_REGISTRAR = "#2E52A3"
 COLOR_BTN_REGISTRAR_HOVER = "#4A604C"
 COLOR_BTN_VER = "#7F8C8D"
 COLOR_BTN_VER_HOVER = "#626D6E"
@@ -24,12 +24,10 @@ COLOR_BOTON_TEXTO = "#FFFFFF"
 
 class VoluntarioVistaModerna(tk.Frame):
     def __init__(self, root, controller=None):
-        # Le aplicamos el color celeste directamente al frame contenedor general
         super().__init__(root, bg=COLOR_FONDO_CELESTE)
         self.controller = controller
         self.root = root
 
-        # También pintamos el fondo de la ventana principal por si acaso
         self.root.configure(bg=COLOR_FONDO_CELESTE)
 
         # Fuentes
@@ -39,13 +37,11 @@ class VoluntarioVistaModerna(tk.Frame):
         self.font_entry = ("Segoe UI", 10)
         self.font_button = ("Segoe UI", 10, "bold")
 
-        # Desplegar la interfaz
         self.pack(fill="both", expand=True)
         self._build_interface()
 
     def _build_interface(self):
         # 1. --- BANNER SUPERIOR (BALLENA) ---
-        # Le ponemos el fondo celeste para que se mezcle perfectamente con los bordes redondeados del banner
         self.frame_banner = tk.Frame(self, bg=COLOR_FONDO_CELESTE)
         self.frame_banner.pack(fill="x", side="top", padx=20, pady=(15, 5))
 
@@ -71,7 +67,6 @@ class VoluntarioVistaModerna(tk.Frame):
             imagen_recortada = imagen_escalada.crop((izquierda, superior, derecha, inferior))
             self.imagen_banner = ImageTk.PhotoImage(imagen_recortada)
 
-            # bg=COLOR_FONDO_CELESTE elimina cualquier borde gris alrededor de la imagen del banner
             self.lbl_banner = tk.Label(self.frame_banner, image=self.imagen_banner, bd=0, bg=COLOR_FONDO_CELESTE)
             self.lbl_banner.pack(fill="x", expand=True)
 
@@ -83,7 +78,6 @@ class VoluntarioVistaModerna(tk.Frame):
             self.lbl_banner.pack(fill="x", expand=True)
 
         # 2. --- CONTENEDOR CENTRAL (3 COLUMNAS) ---
-        # Le asignamos COLOR_FONDO_CELESTE para que los espacios entre las tarjetas sean celestes
         self.contenedor_principal = tk.Frame(self, bg=COLOR_FONDO_CELESTE)
         self.contenedor_principal.pack(fill="both", expand=True, padx=20, pady=(5, 20))
 
@@ -92,7 +86,6 @@ class VoluntarioVistaModerna(tk.Frame):
         self.contenedor_principal.columnconfigure(2, weight=1)
         self.contenedor_principal.rowconfigure(0, weight=1)
 
-        # --- CONSTRUCCIÓN DE LAS TARJETAS (Permanecen Blancas) ---
         self._build_col_left()
         self._build_col_center()
         self._build_col_right()
@@ -169,8 +162,12 @@ class VoluntarioVistaModerna(tk.Frame):
             setattr(self, attr_name, entry)
             entry.grid(row=i, column=1, sticky="ew", pady=6, ipady=2)
 
+        # --- CAMBIO AQUÍ: Contenedor de Botones con Grid uniforme ---
         frame_botones = tk.Frame(self.frame_registro, bg=COLOR_TARJETA)
         frame_botones.pack(fill="x", padx=30, pady=(20, 15))
+
+        # Hacemos que la columna se expanda para ocupar todo el ancho disponible
+        frame_botones.columnconfigure(0, weight=1)
 
         self.btn_registrar = tk.Button(
             frame_botones, text="Registrar Interés de Voluntario", font=self.font_button,
@@ -179,16 +176,18 @@ class VoluntarioVistaModerna(tk.Frame):
             pady=10, cursor="hand2", relief="flat"
         )
         self.btn_registrar.configure(command=self._registrar)
-        self.btn_registrar.pack(fill="x", pady=(0, 10))
+        # sticky="ew" obliga al botón a estirarse a lo ancho de la columna
+        self.btn_registrar.grid(row=0, column=0, sticky="ew", pady=(0, 10))
 
         self.btn_ver_lista = tk.Button(
-            frame_botones, text="Ver Proyectos Disponibles", font=self.font_button,
+            frame_botones, text="Ver Voluntarios Registrados", font=self.font_button,
             bg=COLOR_BTN_VER, fg=COLOR_BOTON_TEXTO, bd=0,
             activebackground=COLOR_BTN_VER_HOVER, activeforeground="white",
             pady=10, cursor="hand2", relief="flat"
         )
         self.btn_ver_lista.configure(command=self._ir_a_lista)
-        self.btn_ver_lista.pack(fill="x")
+        # sticky="ew" para que mida exactamente lo mismo que el de arriba
+        self.btn_ver_lista.grid(row=1, column=0, sticky="ew")
 
     def _build_col_right(self):
         frame_enfoque = tk.Frame(self.contenedor_principal, bg=COLOR_TARJETA, bd=0, relief="flat")
@@ -230,12 +229,6 @@ class VoluntarioVistaModerna(tk.Frame):
             self.lbl_imagen_enfoque = tk.Label(frame_enfoque, text="[peces.jpg]", bg="#F2F4F4", fg=COLOR_TEXTO_MUTED)
             self.lbl_imagen_enfoque.pack(pady=(10, 20))
 
-    def _ir_a_lista(self):
-        if self.controller:
-            pass
-        else:
-            messagebox.showinfo("Navegación", "Aquí abrirás la lista de voluntarios registrados.")
-
     def _registrar(self):
         id_v = self.entry_id.get().strip()
         nom = self.entry_nombre.get().strip()
@@ -267,43 +260,32 @@ class VoluntarioVistaModerna(tk.Frame):
         self.entry_organizacion.delete(0, tk.END)
 
     def _ir_a_lista(self):
-        # 1. Obtenemos los datos del service
-        datos = self.controller.obtener_reporte_jornadas()
+        datos_voluntarios = self.controller.obtener_todos_los_voluntarios()
 
-        # 2. Creamos una ventana emergente (Toplevel) para el reporte
-        ventana_reporte = tk.Toplevel(self.root)
-        ventana_reporte.title("Reporte de Proyectos de Limpieza")
-        ventana_reporte.geometry("600x400")
+        ventana_lista = tk.Toplevel(self.root)
+        ventana_lista.title("Lista de Voluntarios")
+        ventana_lista.geometry("750x400")
 
-        tk.Label(ventana_reporte, text="Proyectos Disponibles", font=("Segoe UI", 14, "bold")).pack(pady=10)
+        tk.Label(ventana_lista, text="Voluntarios Registrados", font=("Segoe UI", 14, "bold")).pack(pady=10)
 
-        # 3. Aquí podrías usar un Treeview (tabla) de tkinter
         from tkinter import ttk
-        columnas = ("ID", "Fecha", "Descripción", "Basura (kg)", "Voluntarios")
-        tabla = ttk.Treeview(ventana_reporte, columns=columnas, show="headings")
+        columnas = ("ID", "Nombre", "Teléfono", "Edad", "Correo", "Organización")
+        tabla = ttk.Treeview(ventana_lista, columns=columnas, show="headings")
 
         for col in columnas:
             tabla.heading(col, text=col)
-            tabla.column(col, width=100)
+            tabla.column(col, width=110, anchor="center")
 
-        for fila in datos:
-            tabla.insert("", tk.END, values=(fila["ID"], fila["Fecha"], fila["Descripción"], fila["Basura (kg)"],
-                                             fila["Voluntarios"]))
+        for vol in datos_voluntarios:
+            tabla.insert("", tk.END, values=(
+                vol["id_voluntario"],
+                vol["nombre"],
+                vol["telefono"],
+                vol["edad"],
+                vol["correo"],
+                vol["organizacion"]
+            ))
 
         tabla.pack(fill="both", expand=True, padx=20, pady=20)
 
 
-if __name__ == "__main__":
-    class ControladorPrueba:
-        def registrar_voluntario(self, id_v, nom, tel, edad, corr, org):
-            print(f"Registrado: {id_v} | {nom} | {tel} | {edad} | {corr} | {org}")
-
-
-    root = tk.Tk()
-    root.title("Sistema de Gestión de Voluntarios - Conservación")
-    root.geometry("950x600")
-
-    controlador = ControladorPrueba()
-    app = VoluntarioVistaModerna(root, controller=controlador)
-
-    root.mainloop()

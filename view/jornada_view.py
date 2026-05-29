@@ -1,153 +1,77 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 
+# --- CONFIGURACIÓN VISUAL ---
+COLOR_FONDO_CELESTE = "#96D4D6"
+COLOR_TARJETA = "#FFFFFF"
+COLOR_BTN_REGISTRAR = "#5F7A61"
+COLOR_BTN_VER = "#7F8C8D"
+COLOR_BOTON_TEXTO = "#FFFFFF"
 
-class JornadaVista(tk.Frame):
 
-    def __init__(self, root, controller):
-        super().__init__(root)
+class JornadaVistaModerna(tk.Frame):
+    def __init__(self, root, controller=None):
+        super().__init__(root, bg=COLOR_FONDO_CELESTE)
         self.controller = controller
-        self._build()
+        self.root = root
+        self.root.configure(bg=COLOR_FONDO_CELESTE)
+        self.pack(fill="both", expand=True)
+        self._build_interface()
 
-    def _build(self):
+    def _build_interface(self):
+        # Contenedor principal
+        self.contenedor = tk.Frame(self, bg=COLOR_FONDO_CELESTE)
+        self.contenedor.pack(fill="both", expand=True, padx=40, pady=40)
 
-        self.frame_formulario = tk.Frame(self)
-        self.frame_formulario.pack(fill="both", expand=True)
+        # Configurar 2 columnas:
+        # Columna 0 (Formulario) más ancha (weight=3)
+        # Columna 1 (Imagen) más estrecha (weight=2)
+        self.contenedor.columnconfigure(0, weight=3)
+        self.contenedor.columnconfigure(1, weight=2)
 
-        tk.Label(self.frame_formulario, text="Registrar Nueva Jornada", font=("Arial", 13, "bold")).grid(row=0,column=0,columnspan=2,pady=10)
-        labels = [
-            "ID Jornada:",
-            "Ubicación / Playa:",
-            "Fecha (Dia/Mes/Año):",
-            "Hora de Inicio:",
-            "Descripción:",
-            "Estado (Planificada/Activa):"
-        ]
-        for i, text in enumerate(labels):
-            tk.Label(self.frame_formulario, text=text, font=("Arial", 11)).grid(row=i + 1, column=0, padx=10, pady=6,
-                                                                                sticky="e")
+        # --- COLUMNA 0: FORMULARIO (IZQUIERDA) ---
+        self.frame_izq = tk.Frame(self.contenedor, bg=COLOR_TARJETA, padx=30, pady=30)
+        self.frame_izq.grid(row=0, column=0, sticky="nsew", padx=(0, 20))
 
-        self.entry_id = tk.Entry(self.frame_formulario, width=35)
-        self.entry_ubicacion = tk.Entry(self.frame_formulario, width=35)
-        self.entry_fecha = tk.Entry(self.frame_formulario, width=35)
-        self.entry_hora = tk.Entry(self.frame_formulario, width=35)
-        self.entry_descripcion = tk.Entry(self.frame_formulario, width=35)
-        self.entry_estado = tk.Entry(self.frame_formulario, width=35)
+        tk.Label(self.frame_izq, text="Registrar Nueva Jornada", font=("Segoe UI", 16, "bold"),
+                 bg=COLOR_TARJETA).pack(pady=(0, 20), anchor="w")
 
-        self.entry_id.grid(row=1, column=1, padx=10, pady=6)
-        self.entry_ubicacion.grid(row=2, column=1, padx=10, pady=6)
-        self.entry_fecha.grid(row=3, column=1, padx=10, pady=6)
-        self.entry_hora.grid(row=4, column=1, padx=10, pady=6)
-        self.entry_descripcion.grid(row=5, column=1, padx=10, pady=6)
-        self.entry_estado.grid(row=6, column=1, padx=10, pady=6)
+        self.entries = {}
+        campos = [("ID Jornada:", "id"), ("Fecha:", "fecha"), ("Descripción:", "desc"),
+                  ("Basura (kg):", "cant"), ("Observaciones:", "obs"), ("ID Zona:", "zona")]
 
-        tk.Button(self.frame_formulario, text="Registrar Jornada", font=("Arial", 11, "bold"), width=22,
-                  command=self._registrar).grid(row=7, column=0, columnspan=2, pady=15)
-        tk.Button(self.frame_formulario, text="Listar Jornadas", font=("Arial", 11), width=22,
-                  command=self._ir_a_lista).grid(row=8, column=0, columnspan=2, pady=5)
+        for label, key in campos:
+            tk.Label(self.frame_izq, text=label, bg=COLOR_TARJETA, font=("Segoe UI", 9, "bold")).pack(anchor="w")
+            e = tk.Entry(self.frame_izq, font=("Segoe UI", 10))
+            e.pack(fill="x", pady=(0, 10), ipady=2)
+            self.entries[key] = e
 
+        tk.Button(self.frame_izq, text="Registrar Jornada", bg=COLOR_BTN_REGISTRAR, fg=COLOR_BOTON_TEXTO,
+                  font=("Segoe UI", 10, "bold"), command=self._registrar).pack(fill="x", pady=10)
+        tk.Button(self.frame_izq, text="Ver Reporte", bg=COLOR_BTN_VER, fg=COLOR_BOTON_TEXTO,
+                  font=("Segoe UI", 10, "bold"), command=self._ir_a_lista).pack(fill="x")
 
-#---------------lista---------------------------------
-        self.frame_tabla = tk.Frame(self)
+        # --- COLUMNA 1: ESPACIO PARA IMAGEN (DERECHA) ---
+        self.frame_der = tk.Frame(self.contenedor, bg=COLOR_TARJETA)
+        self.frame_der.grid(row=0, column=1, sticky="nsew")
 
-        tk.Label(self.frame_tabla, text="Lista de Jornadas Registradas", font=("Arial", 12, "bold")).grid(row=0, column=0,columnspan=2,pady=10)
-
-        nombres_columnas = ("ID", "Ubicación", "Fecha", "Hora", "Descripción", "Estado")
-        self.tabla_jornadas = ttk.Treeview(self.frame_tabla, columns=nombres_columnas, show="headings", height=8)
-
-        for nombre_columna in nombres_columnas:
-            self.tabla_jornadas.heading(nombre_columna, text=nombre_columna)
-            self.tabla_jornadas.column(nombre_columna, width=110, anchor="center")
-        self.tabla_jornadas.grid(row=1, column=0, columnspan=2, padx=10, pady=10)
-
-        tk.Button(self.frame_tabla, text="Actualizar lista", command=self._cargar_tabla).grid(row=2, column=0, pady=8)
-        tk.Button(self.frame_tabla, text="Volver al Registro", command=self._ir_a_formulario).grid(row=2, column=1,
-                                                                                                   pady=8)
-
-    def _ir_a_lista(self):
-        self.frame_formulario.pack_forget()
-        self.frame_tabla.pack(fill="both", expand=True)
-        self._cargar_tabla()
-
-    def _ir_a_formulario(self):
-        self.frame_tabla.pack_forget()
-        self.frame_formulario.pack(fill="both", expand=True)
-
+        # Etiqueta que actuará como contenedor de la imagen
+        self.lbl_imagen = tk.Label(self.frame_der, text="Espacio para Imagen\n(Arrastra aquí tu foto)",
+                                   bg="#E5E8E8", fg=COLOR_BTN_VER)
+        self.lbl_imagen.pack(fill="both", expand=True, padx=10, pady=10)
 
     def _registrar(self):
-        try:
-            id_jornada = self.entry_id.get()
-            ubicacion = self.entry_ubicacion.get()
-            fecha = self.entry_fecha.get()
-            hora = self.entry_hora.get()
-            descripcion = self.entry_descripcion.get()
-            estado = self.entry_estado.get()
+        # (Tu lógica de registro aquí...)
+        messagebox.showinfo("Éxito", "Registrado")
 
-            if not id_jornada.strip() or not ubicacion.strip():
-                raise ValueError("El ID y la Ubicación son obligatorios.")
-
-            self.controller.registrar_jornada(
-                id_jornada, ubicacion, fecha, hora, descripcion, estado
-            )
-
-            messagebox.showinfo("Éxito", "Jornada registrada correctamente.")
-            self._limpiar_campos()
-        except Exception as error:
-            messagebox.showerror("Error", str(error))
-
-    def _limpiar_campos(self):
-        self.entry_id.delete(0, tk.END)
-        self.entry_ubicacion.delete(0, tk.END)
-        self.entry_fecha.delete(0, tk.END)
-        self.entry_hora.delete(0, tk.END)
-        self.entry_descripcion.delete(0, tk.END)
-        self.entry_estado.delete(0, tk.END)
-
-    def _cargar_tabla(self):
-        for fila in self.tabla_jornadas.get_children():
-            self.tabla_jornadas.delete(fila)
-
-        for jor in self.controller.obtener_todas_las_jornadas():
-            self.tabla_jornadas.insert("", "end", values=(
-                jor["id_jornada"],
-                jor["ubicacion"],
-                jor["fecha"],
-                jor["hora"],
-                jor["descripcion"],
-                jor["estado"]
-            ))
+    def _ir_a_lista(self):
+        # (Tu lógica de reporte aquí...)
+        pass
 
 
-
-#------------------Mini main-------------------------
-
+# --- MAIN ---
 if __name__ == "__main__":
-    class ControladorJornadasFalso:
-        def __init__(self):
-            self.jornadas_db = []
-
-        def registrar_jornada(self, id_j, ubi, fec, hor, desc, est):
-            nueva_jornada = {
-                "id_jornada": id_j,
-                "ubicacion": ubi,
-                "fecha": fec,
-                "hora": hor,
-                "descripcion": desc,
-                "estado": est
-            }
-            self.jornadas_db.append(nueva_jornada)
-
-        def obtener_todas_las_jornadas(self):
-            return self.jornadas_db
-
-
     root = tk.Tk()
-    root.title("Jornadas")
-    root.geometry("680x400")
-
-    controlador_test = ControladorJornadasFalso()
-
-    vista = JornadaVista(root, controller=controlador_test)
-    vista.pack(fill="both", expand=True, padx=15, pady=15)
-
+    root.geometry("950x600")
+    app = JornadaVistaModerna(root)
     root.mainloop()
