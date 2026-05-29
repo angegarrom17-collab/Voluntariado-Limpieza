@@ -26,7 +26,7 @@ titulo = Label(
     text="🌊 PROTEJAMOS NUESTRO MAR 🌊",
     font=("Comic Sans MS", 24, "bold"),
     fg="#1b4f72",
-    bg="#000000"
+    bg="#BEEED9"
 )
 
 titulo.place(x=210, y=25)
@@ -37,8 +37,8 @@ subtitulo = Label(
     ventana,
     text="Pequeñas acciones, grandes cambios",
     font=("Comic Sans MS", 16, "bold"),
-    fg="white",
-    bg="#000000"
+    fg="#1b4f72",
+    bg="#BEEED9"
 )
 
 subtitulo.place(x=300, y=80)
@@ -47,7 +47,7 @@ subtitulo.place(x=300, y=80)
 
 frame = Frame(
     ventana,
-    bg="#000000",
+    bg="#C0EEE4",
     bd=0
 )
 
