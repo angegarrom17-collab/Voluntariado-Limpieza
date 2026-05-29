@@ -109,3 +109,16 @@ class VoluntarioServicio:
 #------------------------------------------------------------------------------------------------------
     def obtener_todas_las_jornadas(self):
         return self.jornada_repository.obtener_todos()
+
+    def obtener_reporte_jornadas(self):
+        jornadas = self.jornada_repository.obtener_todos()
+        reporte = []
+        for j in jornadas:
+            reporte.append({
+                "ID": j["id_jornada"],
+                "Fecha": j["fecha_jornada"],
+                "Descripción": j["descripcion"],
+                "Basura (kg)": j["cantidadBasuraTotal"],
+                "Voluntarios": len(j["voluntarios"])  # Contamos cuántos hay
+            })
+        return reporte
