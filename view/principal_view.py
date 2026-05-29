@@ -63,7 +63,7 @@ btnUsuarios = Button(
     frame,
     text="👤\nUsuarios",
     font=fuente,
-    bg="#bde0fe",
+    bg="#94D1EE",
     fg="#0b3c5d",
     width=15,
     height=5,
@@ -80,7 +80,7 @@ btnJornadas = Button(
     frame,
     text="🌊\nJornadas",
     font=fuente,
-    bg="#c8f2c2",
+    bg="#98EEA1",
     fg="#0b3c5d",
     width=15,
     height=5,
@@ -97,7 +97,7 @@ btnVoluntarios = Button(
     frame,
     text="🤝\nVoluntarios",
     font=fuente,
-    bg="#fff1b6",
+    bg="#FFD884",
     fg="#0b3c5d",
     width=15,
     height=5,
@@ -114,7 +114,7 @@ btnZona = Button(
     frame,
     text="📍\nZona",
     font=fuente,
-    bg="#d8c6ff",
+    bg="#E7A7FF",
     fg="#0b3c5d",
     width=15,
     height=5,
@@ -131,7 +131,7 @@ btnMaterial = Button(
     frame,
     text="♻️\nMaterial",
     font=fuente,
-    bg="#ffd6d6",
+    bg="#FFC1BE",
     fg="#0b3c5d",
     width=15,
     height=5,
@@ -148,7 +148,7 @@ btnAnimal = Button(
     frame,
     text="🐢\nAnimal\nAfectado",
     font=fuente,
-    bg="#caf0f8",
+    bg="#68EEE1",
     fg="#0b3c5d",
     width=15,
     height=5,
@@ -182,7 +182,7 @@ btnReporte = Button(
     frame,
     text="📊\nReporte",
     font=fuente,
-    bg="#ffdfba",
+    bg="#B7FF84",
     fg="#0b3c5d",
     width=15,
     height=5,
@@ -197,10 +197,10 @@ btnReporte.grid(row=1, column=3, padx=15, pady=15)
 
 mensaje = Label(
     ventana,
-    text="Juntos hacemos la diferencia 🌎",
+    text="🌎 JUNTOS HACEMOS LA DIFERENCIA 🌎",
     font=("Comic Sans MS", 14, "bold"),
-    fg="white",
-    bg="#000000"
+    fg="White",
+    bg="#259EFF"
 )
 
 mensaje.place(x=330, y=600)
@@ -215,7 +215,7 @@ btnSalir = Button(
     fg="#0b3c5d",
     bd=0,
     relief="flat",
-    width=3,
+    width=5,
     cursor="hand2",
     command=ventana.destroy
 )
