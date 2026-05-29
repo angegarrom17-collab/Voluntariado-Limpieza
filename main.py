@@ -61,8 +61,9 @@ class ControladorPrincipal:
         self.root.mainloop()
 
 
+
 # --- PUNTO DE ENTRADA ÚNICO ---
 if __name__ == "__main__":
-    # Instanciamos el controlador que maneja todo y le damos Play
+
     app = ControladorPrincipal()
     app.iniciar_aplicacion()
