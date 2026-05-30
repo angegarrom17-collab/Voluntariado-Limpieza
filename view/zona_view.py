@@ -1,110 +1,300 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 
+# ── PALETA OCÉANO/PLAYA ────────────────────────────────────────────────────────
+COLOR_TOPBAR      = "#1A6B8A"   # azul océano profundo  → topbar y encabezado tabla
+COLOR_TOPBAR2     = "#2BA0C0"   # azul claro            → gradiente derecho del topbar
+COLOR_FONDO       = "#E8F4F8"   # celeste arena         → fondo general
+COLOR_ACENTO      = "#F0A500"   # dorado arena          → botón primario
+COLOR_BORDE       = "#90CAD8"   # azul suave            → bordes de inputs y tabla
+COLOR_CAMPO_BG    = "#FFFFFF"   # blanco                → fondo de inputs
+COLOR_TEXTO       = "#0D3D50"   # azul muy oscuro       → texto principal
+COLOR_LABEL       = "#1A6B8A"   # azul océano           → etiquetas de campo
+COLOR_TH_FG       = "#E0F7FA"   # celeste muy claro     → texto encabezado tabla
+COLOR_ROW_PAR     = "#EBF6FA"   # celeste pálido        → filas pares
+COLOR_ROW_HOVER   = "#D0ECF5"   # celeste hover
+
 
 class ZonaVista(tk.Frame):
 
     def __init__(self, root, controller):
-        super().__init__(root)
+        super().__init__(root, bg=COLOR_FONDO)
         self.controller = controller
+        self.pack(fill="both", expand=True)
         self._build()
 
+    # ──────────────────────────────────────────────────────────────────────────
     def _build(self):
-        tk.Label(
-            self,
-            text="Registrar Zona",
-            font=("Arial", 13, "bold")
-        ).grid(row=0, column=0, columnspan=2, pady=10)
+        self._build_topbar()
+        self._build_form()
+        self._build_separator()
+        self._build_tabla()
 
-        tk.Label(self, text="ID Zona:", font=("Arial", 11)).grid(
-            row=1, column=0, padx=10, pady=6, sticky="e")
-        self.entry_id_zona = tk.Entry(self, width=30)
-        self.entry_id_zona.grid(row=1, column=1, padx=10, pady=6)
+    # ── 1. TOPBAR ─────────────────────────────────────────────────────────────
+    def _build_topbar(self):
+        """
+        Barra superior azul océano con título a la izquierda y los tres botones
+        a la derecha. El botón Registrar usa el dorado arena como acento.
+        """
+        topbar = tk.Frame(self, bg=COLOR_TOPBAR, height=62)
+        topbar.pack(fill="x")
+        topbar.pack_propagate(False)
 
-        tk.Label(self, text="Nombre:", font=("Arial", 11)).grid(
-            row=2, column=0, padx=10, pady=6, sticky="e")
-        self.entry_nombre_zona = tk.Entry(self, width=30)
-        self.entry_nombre_zona.grid(row=2, column=1, padx=10, pady=6)
+        # Bloque de texto
+        bloque_texto = tk.Frame(topbar, bg=COLOR_TOPBAR)
+        bloque_texto.pack(side="left", padx=24, pady=8)
 
-        tk.Label(self, text="Ubicación:", font=("Arial", 11)).grid(
-            row=3, column=0, padx=10, pady=6, sticky="e")
-        self.entry_ubicacion = tk.Entry(self, width=30)
-        self.entry_ubicacion.grid(row=3, column=1, padx=10, pady=6)
+        tk.Label(bloque_texto,
+                 text="🌊  Gestión de Zonas",
+                 font=("Segoe UI", 13, "bold"),
+                 bg=COLOR_TOPBAR, fg="#E0F7FA"
+                 ).pack(anchor="w")
 
-        tk.Label(self, text="Nivel Contaminación:", font=("Arial", 11)).grid(
-            row=4, column=0, padx=10, pady=6, sticky="e")
-        self.entry_nivel_contaminacion = tk.Entry(self, width=30)
-        self.entry_nivel_contaminacion.grid(row=4, column=1, padx=10, pady=6)
+        tk.Label(bloque_texto,
+                 text="Sistema de monitoreo costero  ·  Módulo de zonas",
+                 font=("Segoe UI", 9),
+                 bg=COLOR_TOPBAR, fg="#B2EBF2"
+                 ).pack(anchor="w")
 
-        tk.Label(self, text="Descripción:", font=("Arial", 11)).grid(
-            row=5, column=0, padx=10, pady=6, sticky="e")
-        self.entry_descripcion = tk.Entry(self, width=30)
-        self.entry_descripcion.grid(row=5, column=1, padx=10, pady=6)
+        # Botones
+        bloque_btns = tk.Frame(topbar, bg=COLOR_TOPBAR)
+        bloque_btns.pack(side="right", padx=20)
 
-        tk.Button(
-            self,
-            text="Registrar Zona",
-            font=("Arial", 11, "bold"),
-            command=self._registrar
-        ).grid(row=6, column=0, columnspan=2, pady=10)
+        # Registrar (dorado arena, redondeado simulado con padx generoso)
+        tk.Button(bloque_btns,
+                  text="Registrar",
+                  font=("Segoe UI", 10, "bold"),
+                  bg=COLOR_ACENTO, fg="white",
+                  activebackground="#CC8C00", activeforeground="white",
+                  bd=0, padx=18, pady=6, cursor="hand2",
+                  command=self._registrar
+                  ).pack(side="left", padx=(0, 8))
 
-        tk.Label(
-            self,
-            text="Lista de Zonas",
-            font=("Arial", 12, "bold")
-        ).grid(row=7, column=0, columnspan=2, pady=(15, 5))
+        # Limpiar
+        tk.Button(bloque_btns,
+                  text="Limpiar",
+                  font=("Segoe UI", 10),
+                  bg=COLOR_TOPBAR, fg="#E0F7FA",
+                  activebackground=COLOR_TOPBAR2, activeforeground="white",
+                  bd=1, relief="solid", padx=14, pady=6, cursor="hand2",
+                  command=self._limpiar_campos
+                  ).pack(side="left", padx=(0, 8))
 
-        nombres_columnas = ("ID", "Nombre", "Ubicación", "Contaminación")
-        self.tabla_zonas = ttk.Treeview(
-            self,
-            columns=nombres_columnas,
-            show="headings",
-            height=6
-        )
-        for nombre_columna in nombres_columnas:
-            self.tabla_zonas.heading(nombre_columna, text=nombre_columna)
-            self.tabla_zonas.column(nombre_columna, width=130)
-        self.tabla_zonas.grid(row=8, column=0, columnspan=2, padx=10)
+        # Salir
+        tk.Button(bloque_btns,
+                  text="←  Salir",
+                  font=("Segoe UI", 10),
+                  bg=COLOR_TOPBAR, fg="#E0F7FA",
+                  activebackground=COLOR_TOPBAR2, activeforeground="white",
+                  bd=1, relief="solid", padx=14, pady=6, cursor="hand2",
+                  command=self._salir
+                  ).pack(side="left")
 
-        tk.Button(
-            self,
-            text="Actualizar lista",
-            command=self._cargar_tabla
-        ).grid(row=9, column=0, columnspan=2, pady=8)
+    # ── 2. FORMULARIO ─────────────────────────────────────────────────────────
+    def _build_form(self):
+        """
+        Cinco campos en cuadrícula 3-columnas.
+        'Descripción' ocupa span de 2 columnas (columnas 1 y 2 de la fila 2)
+        para darle más espacio visual, igual al mockup.
+        """
+        frame = tk.Frame(self, bg=COLOR_FONDO)
+        frame.pack(fill="x", padx=36, pady=(22, 0))
+
+        # Configurar 3 columnas de igual peso
+        for c in range(3):
+            frame.columnconfigure(c, weight=1)
+
+        campos = [
+            # (texto_label, attr_name, fila, col, colspan)
+            ("ID Zona",              "entry_id_zona",            0, 0, 1),
+            ("Nombre",               "entry_nombre_zona",        0, 1, 1),
+            ("Ubicación",            "entry_ubicacion",          0, 2, 1),
+            ("Nivel de Contaminación","entry_nivel_contaminacion",1, 0, 1),
+            ("Descripción",          "entry_descripcion",        1, 1, 2),
+        ]
+
+        for label_texto, attr, fila, col, colspan in campos:
+            fila_label = fila * 2        # cada campo ocupa 2 filas (label + entry)
+            fila_entry = fila * 2 + 1
+
+            tk.Label(frame,
+                     text=label_texto.upper(),
+                     font=("Segoe UI", 8, "bold"),
+                     bg=COLOR_FONDO, fg=COLOR_LABEL
+                     ).grid(row=fila_label, column=col, columnspan=colspan,
+                            sticky="w", padx=(0, 22), pady=(10, 2))
+
+            entry = tk.Entry(frame,
+                             font=("Segoe UI", 10),
+                             bd=1, relief="solid",
+                             bg=COLOR_CAMPO_BG, fg=COLOR_TEXTO,
+                             insertbackground=COLOR_TOPBAR,
+                             highlightthickness=1,
+                             highlightbackground=COLOR_BORDE,
+                             highlightcolor=COLOR_TOPBAR)
+            entry.grid(row=fila_entry, column=col, columnspan=colspan,
+                       sticky="ew", padx=(0, 22), pady=(0, 4), ipady=4)
+
+            setattr(self, attr, entry)
+
+    # ── 3. SEPARADOR OLA ──────────────────────────────────────────────────────
+    def _build_separator(self):
+        """
+        Línea Canvas que dibuja una ola curva SVG-style usando bezier,
+        diferente al separador recto del estilo café.
+        """
+        canvas = tk.Canvas(self, height=28, bg=COLOR_FONDO,
+                           highlightthickness=0)
+        canvas.pack(fill="x", padx=36, pady=(14, 0))
+
+        # Dibuja una curva tipo ola con create_line usando suavizado
+        # Los puntos simulan una onda sinusoidal sencilla
+        puntos = []
+        ancho = 928   # ancho aproximado restando padx=36 a cada lado
+        for i in range(0, ancho + 1, 20):
+            import math
+            y = 14 + 6 * math.sin(i / 80 * math.pi)
+            puntos.extend([i, y])
+
+        canvas.create_line(puntos, fill=COLOR_BORDE, width=2, smooth=True)
+
+    # ── 4. TABLA ──────────────────────────────────────────────────────────────
+    def _build_tabla(self):
+        frame = tk.Frame(self, bg=COLOR_FONDO)
+        frame.pack(fill="both", expand=True, padx=36, pady=(10, 18))
+
+        # Encabezado de sección
+        fila_enc = tk.Frame(frame, bg=COLOR_FONDO)
+        fila_enc.pack(fill="x", pady=(0, 10))
+
+        tk.Label(fila_enc,
+                 text="🐚  ZONAS REGISTRADAS",
+                 font=("Segoe UI", 10, "bold"),
+                 bg=COLOR_FONDO, fg=COLOR_TOPBAR
+                 ).pack(side="left")
+
+        tk.Button(fila_enc,
+                  text="⟳  Actualizar",
+                  font=("Segoe UI", 9),
+                  bg=COLOR_CAMPO_BG, fg=COLOR_TOPBAR,
+                  bd=1, relief="solid", padx=10, pady=3, cursor="hand2",
+                  command=self._cargar_tabla
+                  ).pack(side="right")
+
+        # Estilo Treeview oceánico
+        style = ttk.Style()
+        style.theme_use("default")
+        style.configure("Oceano.Treeview.Heading",
+                         font=("Segoe UI", 9, "bold"),
+                         background=COLOR_TOPBAR,
+                         foreground=COLOR_TH_FG,
+                         relief="flat")
+        style.configure("Oceano.Treeview",
+                         font=("Segoe UI", 10),
+                         rowheight=30,
+                         background=COLOR_CAMPO_BG,
+                         fieldbackground=COLOR_CAMPO_BG,
+                         foreground=COLOR_TEXTO)
+        style.map("Oceano.Treeview",
+                  background=[("selected", COLOR_ACENTO)],
+                  foreground=[("selected", "white")])
+
+        columnas = ("ID", "Nombre", "Ubicación", "Contaminación")
+        self.tabla_zonas = ttk.Treeview(frame,
+                                         columns=columnas,
+                                         show="headings",
+                                         height=8,
+                                         style="Oceano.Treeview")
+
+        anchos = {"ID": 70, "Nombre": 200, "Ubicación": 260, "Contaminación": 130}
+        for col in columnas:
+            self.tabla_zonas.heading(col, text=col)
+            self.tabla_zonas.column(col, width=anchos[col], anchor="center")
+
+        # Colores alternados por tag (fila par = celeste pálido)
+        self.tabla_zonas.tag_configure("par",  background=COLOR_ROW_PAR)
+        self.tabla_zonas.tag_configure("impar", background=COLOR_CAMPO_BG)
+
+        self.tabla_zonas.pack(fill="both", expand=True)
+
+        self.lbl_footer = tk.Label(frame,
+                                    text="",
+                                    font=("Segoe UI", 8),
+                                    bg=COLOR_FONDO, fg="#5A9DB0")
+        self.lbl_footer.pack(anchor="w", pady=(6, 0))
 
         self._cargar_tabla()
 
+    # ── MÉTODOS DE LÓGICA ─────────────────────────────────────────────────────
+
     def _registrar(self):
         try:
-            id_zona = self.entry_id_zona.get()
-            nombre_zona = self.entry_nombre_zona.get()
-            ubicacion = self.entry_ubicacion.get()
-            nivel_contaminacion = self.entry_nivel_contaminacion.get()
-            descripcion = self.entry_descripcion.get()
+            id_zona             = self.entry_id_zona.get().strip()
+            nombre_zona         = self.entry_nombre_zona.get().strip()
+            ubicacion           = self.entry_ubicacion.get().strip()
+            nivel_contaminacion = self.entry_nivel_contaminacion.get().strip()
+            descripcion         = self.entry_descripcion.get().strip()
+
+            if not (id_zona and nombre_zona and ubicacion and nivel_contaminacion):
+                messagebox.showwarning("Atención",
+                                       "Complete los campos obligatorios\n"
+                                       "(ID, Nombre, Ubicación y Nivel de Contaminación).")
+                return
 
             self.controller.registrar_zona(
                 int(id_zona), nombre_zona, ubicacion,
                 nivel_contaminacion, descripcion
             )
-            messagebox.showinfo("Éxito", "Zona registrada.")
+            messagebox.showinfo("Éxito", f"Zona '{nombre_zona}' registrada.")
             self._limpiar_campos()
             self._cargar_tabla()
-        except Exception as error:
-            messagebox.showerror("Error", str(error))
+        except ValueError:
+            messagebox.showerror("Error", "El ID Zona debe ser un número entero.")
+        except Exception as e:
+            messagebox.showerror("Error", str(e))
 
     def _limpiar_campos(self):
-        self.entry_id_zona.delete(0, tk.END)
-        self.entry_nombre_zona.delete(0, tk.END)
-        self.entry_ubicacion.delete(0, tk.END)
-        self.entry_nivel_contaminacion.delete(0, tk.END)
-        self.entry_descripcion.delete(0, tk.END)
+        for attr in ("entry_id_zona", "entry_nombre_zona", "entry_ubicacion",
+                     "entry_nivel_contaminacion", "entry_descripcion"):
+            getattr(self, attr).delete(0, tk.END)
 
     def _cargar_tabla(self):
         for fila in self.tabla_zonas.get_children():
             self.tabla_zonas.delete(fila)
-        for zona in self.controller.get_all_zonas():
-            self.tabla_zonas.insert(
-                "", "end",
+
+        zonas = self.controller.get_all_zonas()
+        for i, zona in enumerate(zonas):
+            tag = "par" if i % 2 == 0 else "impar"
+            self.tabla_zonas.insert("", "end",
                 values=(zona.id_zona, zona.nombre_zona,
-                        zona.ubicacion, zona.nivel_contaminacion)
-            )
+                        zona.ubicacion, zona.nivel_contaminacion),
+                tags=(tag,))
+
+        self.lbl_footer.config(text=f"Mostrando {len(zonas)} zona(s) registrada(s)")
+
+    def _salir(self):
+        if hasattr(self.controller, "volver_inicio"):
+            self.controller.volver_inicio()
+        else:
+            self.winfo_toplevel().destroy()
+
+
+# ── EJECUCIÓN INDEPENDIENTE ───────────────────────────────────────────────────
+if __name__ == "__main__":
+    root = tk.Tk()
+    root.title("Sistema Costero · Zonas")
+    root.geometry("1000x650")
+    root.resizable(False, False)
+
+    class ControladorFalso:
+        def registrar_zona(self, id_, nombre, ubicacion, nivel, desc):
+            print(f"[ZONA] id={id_}, nombre={nombre}, nivel={nivel}")
+
+        def get_all_zonas(self):
+            return []
+
+        def volver_inicio(self):
+            print("[SALIR] Volviendo a ventana principal...")
+
+    app = ZonaVista(root, ControladorFalso())
+    root.mainloop()
