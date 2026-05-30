@@ -1,18 +1,17 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 
-# ── PALETA OCÉANO/PLAYA ────────────────────────────────────────────────────────
-COLOR_TOPBAR      = "#1A6B8A"   # azul océano profundo  → topbar y encabezado tabla
-COLOR_TOPBAR2     = "#2BA0C0"   # azul claro            → gradiente derecho del topbar
-COLOR_FONDO       = "#E8F4F8"   # celeste arena         → fondo general
-COLOR_ACENTO      = "#F0A500"   # dorado arena          → botón primario
-COLOR_BORDE       = "#90CAD8"   # azul suave            → bordes de inputs y tabla
-COLOR_CAMPO_BG    = "#FFFFFF"   # blanco                → fondo de inputs
-COLOR_TEXTO       = "#0D3D50"   # azul muy oscuro       → texto principal
-COLOR_LABEL       = "#1A6B8A"   # azul océano           → etiquetas de campo
-COLOR_TH_FG       = "#E0F7FA"   # celeste muy claro     → texto encabezado tabla
-COLOR_ROW_PAR     = "#EBF6FA"   # celeste pálido        → filas pares
-COLOR_ROW_HOVER   = "#D0ECF5"   # celeste hover
+COLOR_TOPBAR      = "#1A6B8A"
+COLOR_TOPBAR2     = "#2BA0C0"
+COLOR_FONDO       = "#E8F4F8"
+COLOR_ACENTO      = "#F0A500"
+COLOR_BORDE       = "#90CAD8"
+COLOR_CAMPO_BG    = "#FFFFFF"
+COLOR_TEXTO       = "#0D3D50"
+COLOR_LABEL       = "#1A6B8A"
+COLOR_TH_FG       = "#E0F7FA"
+COLOR_ROW_PAR     = "#EBF6FA"
+COLOR_ROW_HOVER   = "#D0ECF5"
 
 
 class ZonaVista(tk.Frame):
@@ -23,24 +22,17 @@ class ZonaVista(tk.Frame):
         self.pack(fill="both", expand=True)
         self._build()
 
-    # ──────────────────────────────────────────────────────────────────────────
     def _build(self):
         self._build_topbar()
         self._build_form()
         self._build_separator()
         self._build_tabla()
 
-    # ── 1. TOPBAR ─────────────────────────────────────────────────────────────
     def _build_topbar(self):
-        """
-        Barra superior azul océano con título a la izquierda y los tres botones
-        a la derecha. El botón Registrar usa el dorado arena como acento.
-        """
         topbar = tk.Frame(self, bg=COLOR_TOPBAR, height=62)
         topbar.pack(fill="x")
         topbar.pack_propagate(False)
 
-        # Bloque de texto
         bloque_texto = tk.Frame(topbar, bg=COLOR_TOPBAR)
         bloque_texto.pack(side="left", padx=24, pady=8)
 
@@ -56,11 +48,9 @@ class ZonaVista(tk.Frame):
                  bg=COLOR_TOPBAR, fg="#B2EBF2"
                  ).pack(anchor="w")
 
-        # Botones
         bloque_btns = tk.Frame(topbar, bg=COLOR_TOPBAR)
         bloque_btns.pack(side="right", padx=20)
 
-        # Registrar (dorado arena, redondeado simulado con padx generoso)
         tk.Button(bloque_btns,
                   text="Registrar",
                   font=("Segoe UI", 10, "bold"),
@@ -70,7 +60,6 @@ class ZonaVista(tk.Frame):
                   command=self._registrar
                   ).pack(side="left", padx=(0, 8))
 
-        # Limpiar
         tk.Button(bloque_btns,
                   text="Limpiar",
                   font=("Segoe UI", 10),
@@ -80,7 +69,6 @@ class ZonaVista(tk.Frame):
                   command=self._limpiar_campos
                   ).pack(side="left", padx=(0, 8))
 
-        # Salir
         tk.Button(bloque_btns,
                   text="←  Salir",
                   font=("Segoe UI", 10),
@@ -90,22 +78,14 @@ class ZonaVista(tk.Frame):
                   command=self._salir
                   ).pack(side="left")
 
-    # ── 2. FORMULARIO ─────────────────────────────────────────────────────────
     def _build_form(self):
-        """
-        Cinco campos en cuadrícula 3-columnas.
-        'Descripción' ocupa span de 2 columnas (columnas 1 y 2 de la fila 2)
-        para darle más espacio visual, igual al mockup.
-        """
         frame = tk.Frame(self, bg=COLOR_FONDO)
         frame.pack(fill="x", padx=36, pady=(22, 0))
 
-        # Configurar 3 columnas de igual peso
         for c in range(3):
             frame.columnconfigure(c, weight=1)
 
         campos = [
-            # (texto_label, attr_name, fila, col, colspan)
             ("ID Zona",              "entry_id_zona",            0, 0, 1),
             ("Nombre",               "entry_nombre_zona",        0, 1, 1),
             ("Ubicación",            "entry_ubicacion",          0, 2, 1),
@@ -114,7 +94,7 @@ class ZonaVista(tk.Frame):
         ]
 
         for label_texto, attr, fila, col, colspan in campos:
-            fila_label = fila * 2        # cada campo ocupa 2 filas (label + entry)
+            fila_label = fila * 2
             fila_entry = fila * 2 + 1
 
             tk.Label(frame,
@@ -137,20 +117,13 @@ class ZonaVista(tk.Frame):
 
             setattr(self, attr, entry)
 
-    # ── 3. SEPARADOR OLA ──────────────────────────────────────────────────────
     def _build_separator(self):
-        """
-        Línea Canvas que dibuja una ola curva SVG-style usando bezier,
-        diferente al separador recto del estilo café.
-        """
         canvas = tk.Canvas(self, height=28, bg=COLOR_FONDO,
                            highlightthickness=0)
         canvas.pack(fill="x", padx=36, pady=(14, 0))
 
-        # Dibuja una curva tipo ola con create_line usando suavizado
-        # Los puntos simulan una onda sinusoidal sencilla
         puntos = []
-        ancho = 928   # ancho aproximado restando padx=36 a cada lado
+        ancho = 928
         for i in range(0, ancho + 1, 20):
             import math
             y = 14 + 6 * math.sin(i / 80 * math.pi)
@@ -158,12 +131,10 @@ class ZonaVista(tk.Frame):
 
         canvas.create_line(puntos, fill=COLOR_BORDE, width=2, smooth=True)
 
-    # ── 4. TABLA ──────────────────────────────────────────────────────────────
     def _build_tabla(self):
         frame = tk.Frame(self, bg=COLOR_FONDO)
         frame.pack(fill="both", expand=True, padx=36, pady=(10, 18))
 
-        # Encabezado de sección
         fila_enc = tk.Frame(frame, bg=COLOR_FONDO)
         fila_enc.pack(fill="x", pady=(0, 10))
 
@@ -181,7 +152,6 @@ class ZonaVista(tk.Frame):
                   command=self._cargar_tabla
                   ).pack(side="right")
 
-        # Estilo Treeview oceánico
         style = ttk.Style()
         style.theme_use("default")
         style.configure("Oceano.Treeview.Heading",
@@ -211,7 +181,6 @@ class ZonaVista(tk.Frame):
             self.tabla_zonas.heading(col, text=col)
             self.tabla_zonas.column(col, width=anchos[col], anchor="center")
 
-        # Colores alternados por tag (fila par = celeste pálido)
         self.tabla_zonas.tag_configure("par",  background=COLOR_ROW_PAR)
         self.tabla_zonas.tag_configure("impar", background=COLOR_CAMPO_BG)
 
@@ -224,8 +193,6 @@ class ZonaVista(tk.Frame):
         self.lbl_footer.pack(anchor="w", pady=(6, 0))
 
         self._cargar_tabla()
-
-    # ── MÉTODOS DE LÓGICA ─────────────────────────────────────────────────────
 
     def _registrar(self):
         try:
@@ -279,7 +246,6 @@ class ZonaVista(tk.Frame):
             self.winfo_toplevel().destroy()
 
 
-# ── EJECUCIÓN INDEPENDIENTE ───────────────────────────────────────────────────
 if __name__ == "__main__":
     root = tk.Tk()
     root.title("Sistema Costero · Zonas")

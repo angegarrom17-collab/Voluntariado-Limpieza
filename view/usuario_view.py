@@ -1,17 +1,16 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 
-# ── PALETA CAFÉ ADMINISTRATIVA ─────────────────────────────────────────────────
-COLOR_TOPBAR      = "#6B4226"   # café oscuro  → topbar y encabezado de tabla
-COLOR_FONDO       = "#F2EAD3"   # beige cálido → fondo general
-COLOR_ACENTO      = "#C8956C"   # terracota    → botón primario y badges
-COLOR_BORDE       = "#C9B49A"   # borde suave
-COLOR_CAMPO_BG    = "#FFF9F2"   # blanco crema → fondo de inputs
-COLOR_TEXTO       = "#3E2010"   # café muy oscuro → texto principal
-COLOR_LABEL       = "#8B6347"   # café medio   → etiquetas de campo
-COLOR_SEP         = "#D6C4A8"   # separador entre secciones
-COLOR_ROW_PAR     = "#EDE0CC"   # fila par de la tabla
-COLOR_TH_FG       = "#F9F3E8"   # texto del encabezado de tabla
+COLOR_TOPBAR      = "#6B4226"
+COLOR_FONDO       = "#F2EAD3"
+COLOR_ACENTO      = "#C8956C"
+COLOR_BORDE       = "#C9B49A"
+COLOR_CAMPO_BG    = "#FFF9F2"
+COLOR_TEXTO       = "#3E2010"
+COLOR_LABEL       = "#8B6347"
+COLOR_SEP         = "#D6C4A8"
+COLOR_ROW_PAR     = "#EDE0CC"
+COLOR_TH_FG       = "#F9F3E8"
 
 
 class UsuarioVista(tk.Frame):
@@ -22,25 +21,17 @@ class UsuarioVista(tk.Frame):
         self.pack(fill="both", expand=True)
         self._build()
 
-    # ──────────────────────────────────────────────────────────────────────────
     def _build(self):
         self._build_topbar()
         self._build_form()
         self._build_separator()
         self._build_tabla()
 
-    # ── 1. TOPBAR ─────────────────────────────────────────────────────────────
     def _build_topbar(self):
-        """
-        Barra superior con título a la izquierda y los tres botones
-        (Registrar / Limpiar / Salir) a la derecha.
-        Reemplaza la sidebar lateral y los botones del panel del diseño anterior.
-        """
         topbar = tk.Frame(self, bg=COLOR_TOPBAR, height=58)
         topbar.pack(fill="x")
         topbar.pack_propagate(False)
 
-        # Bloque de texto: título + subtítulo
         bloque_texto = tk.Frame(topbar, bg=COLOR_TOPBAR)
         bloque_texto.pack(side="left", padx=24, pady=8)
 
@@ -56,11 +47,9 @@ class UsuarioVista(tk.Frame):
                  bg=COLOR_TOPBAR, fg="#D4B896"
                  ).pack(anchor="w")
 
-        # Botones a la derecha del topbar
         bloque_btns = tk.Frame(topbar, bg=COLOR_TOPBAR)
         bloque_btns.pack(side="right", padx=20)
 
-        # Registrar (acento terracota)
         tk.Button(bloque_btns,
                   text="Registrar",
                   font=("Segoe UI", 10, "bold"),
@@ -70,7 +59,6 @@ class UsuarioVista(tk.Frame):
                   command=self._registrar
                   ).pack(side="left", padx=(0, 8))
 
-        # Limpiar (borde claro, sin relleno)
         tk.Button(bloque_btns,
                   text="Limpiar",
                   font=("Segoe UI", 10),
@@ -81,7 +69,6 @@ class UsuarioVista(tk.Frame):
                   command=self._limpiar_campos
                   ).pack(side="left", padx=(0, 8))
 
-        # Salir (borde claro, llama al controlador o cierra la ventana)
         tk.Button(bloque_btns,
                   text="⬅  Salir",
                   font=("Segoe UI", 10),
@@ -91,12 +78,7 @@ class UsuarioVista(tk.Frame):
                   command=self._salir
                   ).pack(side="left")
 
-    # ── 2. FORMULARIO ─────────────────────────────────────────────────────────
     def _build_form(self):
-        """
-        Cinco campos en una cuadrícula de 3 columnas usando grid().
-        El quinto campo ocupa la primera celda de la segunda fila.
-        """
         frame = tk.Frame(self, bg=COLOR_FONDO)
         frame.pack(fill="x", padx=36, pady=(24, 0))
 
@@ -109,8 +91,8 @@ class UsuarioVista(tk.Frame):
         ]
 
         for idx, (label_texto, attr, es_pass) in enumerate(campos):
-            col = idx % 3          # columna: 0, 1, 2, 0, 1
-            fila_base = (idx // 3) * 2   # cada campo ocupa 2 filas (label + entry)
+            col = idx % 3
+            fila_base = (idx // 3) * 2
 
             tk.Label(frame,
                      text=label_texto.upper(),
@@ -130,22 +112,17 @@ class UsuarioVista(tk.Frame):
 
             setattr(self, attr, entry)
 
-        # Las 3 columnas se expanden igual al redimensionar
         frame.columnconfigure(0, weight=1)
         frame.columnconfigure(1, weight=1)
         frame.columnconfigure(2, weight=1)
 
-    # ── 3. SEPARADOR ──────────────────────────────────────────────────────────
     def _build_separator(self):
-        """Línea fina entre el formulario y la tabla."""
         tk.Frame(self, bg=COLOR_SEP, height=1).pack(fill="x", padx=36, pady=16)
 
-    # ── 4. TABLA ──────────────────────────────────────────────────────────────
     def _build_tabla(self):
         frame = tk.Frame(self, bg=COLOR_FONDO)
         frame.pack(fill="both", expand=True, padx=36, pady=(0, 20))
 
-        # Encabezado de sección
         fila_enc = tk.Frame(frame, bg=COLOR_FONDO)
         fila_enc.pack(fill="x", pady=(0, 10))
 
@@ -163,7 +140,6 @@ class UsuarioVista(tk.Frame):
                   command=self._cargar_tabla
                   ).pack(side="right")
 
-        # Estilo de la tabla
         style = ttk.Style()
         style.theme_use("default")
         style.configure("Cafe.Treeview.Heading",
@@ -201,8 +177,6 @@ class UsuarioVista(tk.Frame):
         self.lbl_footer.pack(anchor="w", pady=(6, 0))
 
         self._cargar_tabla()
-
-    # ── MÉTODOS DE LÓGICA ─────────────────────────────────────────────────────
 
     def _registrar(self):
         try:
@@ -244,17 +218,12 @@ class UsuarioVista(tk.Frame):
         self.lbl_footer.config(text=f"Mostrando {len(usuarios)} registro(s)")
 
     def _salir(self):
-        """
-        Intenta navegar hacia la ventana principal a través del controlador.
-        Si el controlador no tiene ese método, cierra directamente la ventana.
-        """
         if hasattr(self.controller, "volver_inicio"):
             self.controller.volver_inicio()
         else:
             self.winfo_toplevel().destroy()
 
 
-# ── EJECUCIÓN INDEPENDIENTE ───────────────────────────────────────────────────
 if __name__ == "__main__":
     root = tk.Tk()
     root.title("Sistema Administrativo · Usuarios")
