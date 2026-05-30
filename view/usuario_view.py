@@ -70,7 +70,7 @@ class UsuarioVista(tk.Frame):
                   ).pack(side="left", padx=(0, 8))
 
         tk.Button(bloque_btns,
-                  text="⬅  Salir",
+                  text="←  Salir",
                   font=("Segoe UI", 10),
                   bg=COLOR_TOPBAR, fg="#F9F3E8",
                   activebackground="#8B5E3C", activeforeground="white",
@@ -133,7 +133,7 @@ class UsuarioVista(tk.Frame):
                  ).pack(side="left")
 
         tk.Button(fila_enc,
-                  text="⟳  Actualizar",
+                  text="Actualizar",
                   font=("Segoe UI", 9),
                   bg=COLOR_FONDO, fg=COLOR_TOPBAR,
                   bd=1, relief="solid", padx=10, pady=3, cursor="hand2",

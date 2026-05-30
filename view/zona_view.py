@@ -37,7 +37,7 @@ class ZonaVista(tk.Frame):
         bloque_texto.pack(side="left", padx=24, pady=8)
 
         tk.Label(bloque_texto,
-                 text="🌊  Gestión de Zonas",
+                 text="Gestión de Zonas",
                  font=("Segoe UI", 13, "bold"),
                  bg=COLOR_TOPBAR, fg="#E0F7FA"
                  ).pack(anchor="w")
@@ -139,13 +139,13 @@ class ZonaVista(tk.Frame):
         fila_enc.pack(fill="x", pady=(0, 10))
 
         tk.Label(fila_enc,
-                 text="🐚  ZONAS REGISTRADAS",
+                 text="ZONAS REGISTRADAS",
                  font=("Segoe UI", 10, "bold"),
                  bg=COLOR_FONDO, fg=COLOR_TOPBAR
                  ).pack(side="left")
 
         tk.Button(fila_enc,
-                  text="⟳  Actualizar",
+                  text="Actualizar",
                   font=("Segoe UI", 9),
                   bg=COLOR_CAMPO_BG, fg=COLOR_TOPBAR,
                   bd=1, relief="solid", padx=10, pady=3, cursor="hand2",
