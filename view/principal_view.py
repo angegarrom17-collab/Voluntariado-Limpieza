@@ -87,11 +87,14 @@ class PrincipalView(tk.Frame):
         )
         self.btnVoluntarios.grid(row=0, column=2, padx=15, pady=15)
 
-        self.btnZona = tk.Button(
-            self.frame_botones, text="📍\nZona", font=self.fuente,
-            bg="#E7A7FF", fg="#0b3c5d", width=15, height=5, bd=0, relief="flat", cursor="hand2"
+        # !!! CONEXIÓN DE ZONAS AQUÍ !!! El botón ahora llama a mostrar_registro_zonas
+        self.btnZonas = tk.Button(
+            self.frame_botones, text="📍\nZonas", font=self.fuente,
+            bg="#94EED1", fg="#0b3c5d", width=15, height=5, bd=0, relief="flat", cursor="hand2",
+            # 🚨 Aquí enlazamos tu Controlador de forma segura:
+            command=lambda: self.controller.mostrar_registro_zonas() if self.controller else print("Click Zonas")
         )
-        self.btnZona.grid(row=0, column=3, padx=15, pady=15)
+        self.btnZonas.grid(row=0, column=3, padx=15, pady=15)
 
         # ---------------- FILA 2 ----------------
         self.btnMaterial = tk.Button(
