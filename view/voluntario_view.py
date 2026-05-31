@@ -132,6 +132,13 @@ class VoluntarioVistaModerna(tk.Frame):
         for attr in ("entry_id", "entry_nombre", "entry_telefono", "entry_edad", "entry_correo", "entry_organizacion"):
             getattr(self, attr).delete(0, tk.END)
 
+    def _ver_tabla(self):
+        # Le avisa al controlador que el usuario quiere ver la lista
+        if self.controller and hasattr(self.controller, 'mostrar_tabla_voluntarios'):
+            self.controller.mostrar_tabla_voluntarios()
+        else:
+            print("Abriendo lista de voluntarios registrados... (Sin controlador conectado)")
+
     def _volver(self):
         # Regresa fluidamente al menú principal usando el AppController
         if self.controller and hasattr(self.controller, 'mostrar_menu_principal'):
