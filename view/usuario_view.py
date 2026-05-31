@@ -179,27 +179,46 @@ class UsuarioVista(tk.Frame):
         self._cargar_tabla()
 
     def _registrar(self):
+        # 1. Recuperamos los strings limpios desde la pantalla
+        id_usuario = self.entry_id.get().strip()
+        nombre = self.entry_nombre.get().strip()
+        correo = self.entry_correo.get().strip()
+        contrasena = self.entry_contrasena.get().strip()
+        tipo = self.entry_tipo.get().strip()
+
+        # Validación visual de campos vacíos
+        if not (id_usuario and nombre and correo and contrasena and tipo):
+            messagebox.showwarning("Atención", "Complete todos los campos.")
+            return
+
+        # Validación rápida local: El ID debe componerse solo de dígitos numéricos
+        if not id_usuario.isdigit():
+            messagebox.showerror("Error", "El ID debe ser un número entero.")
+            return
+
         try:
-            id_usuario = self.entry_id.get().strip()
-            nombre     = self.entry_nombre.get().strip()
-            correo     = self.entry_correo.get().strip()
-            contrasena = self.entry_contrasena.get().strip()
-            tipo       = self.entry_tipo.get().strip()
-
-            if not (id_usuario and nombre and correo and contrasena and tipo):
-                messagebox.showwarning("Atención", "Complete todos los campos.")
-                return
-
+            # 2. Enviamos el id_usuario como STRING (tal como lo espera tu Servicio)
             self.controller.registrar_usuario(
-                int(id_usuario), nombre, correo, contrasena, tipo
+                id_usuario, nombre, correo, contrasena, tipo
             )
+
             messagebox.showinfo("Éxito", f"Usuario '{nombre}' registrado.")
             self._limpiar_campos()
-            self._cargar_tabla()
-        except ValueError:
-            messagebox.showerror("Error", "El ID debe ser un número entero.")
-        except Exception as e:
-            messagebox.showerror("Error", str(e))
+
+            # 3. Intentamos cargar la tabla de forma aislada
+            try:
+                self._cargar_tabla()
+            except Exception as e_tabla:
+                # Si falla la tabla, te enteras del error real sin romper el flujo de registro
+                messagebox.showwarning("Aviso",
+                                       f"Usuario guardado, pero no se pudo actualizar la tabla visual: {e_tabla}")
+
+        except ValueError as e_negocio:
+            # Aquí caen los ValueErrors que lanza tu CAPA DE SERVICIO (ej: "El correo no tiene formato válido")
+            messagebox.showerror("Validación del Sistema", str(e_negocio))
+        except Exception as e_sistema:
+            # Aquí caen errores inesperados (ej: problemas de permisos con el archivo JSON)
+            messagebox.showerror("Error del Sistema", f"Ocurrió un error inesperado: {e_sistema}")
 
     def _limpiar_campos(self):
         for attr in ("entry_id", "entry_nombre", "entry_correo",
