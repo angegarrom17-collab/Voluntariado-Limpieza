@@ -61,11 +61,9 @@ class PrincipalView(tk.Frame):
         self.frame_botones.place(x=170, y=170)
 
         # ---------------- FILA 1 ----------------
-        # ---------------- FILA 1 ----------------
         self.btnUsuarios = tk.Button(
             self.frame_botones, text="👤\nUsuarios", font=self.fuente,
             bg="#94D1EE", fg="#0b3c5d", width=15, height=5, bd=0, relief="flat", cursor="hand2",
-            # 🚨 AGREGA ESTA LÍNEA EXACTAMENTE AQUÍ:
             command=lambda: self.controller.mostrar_registro_usuarios() if self.controller else print("Click Usuarios")
         )
         self.btnUsuarios.grid(row=0, column=0, padx=15, pady=15)
@@ -73,25 +71,20 @@ class PrincipalView(tk.Frame):
         self.btnJornadas = tk.Button(
             self.frame_botones, text="🌊\nJornadas", font=self.fuente,
             bg="#98EEA1", fg="#0b3c5d", width=15, height=5, bd=0, relief="flat", cursor="hand2",
-            # 🚨 AGREGA ESTA LÍNEA REVISANDO QUE LLAME A mostrar_registro_jornadas:
             command=lambda: self.controller.mostrar_registro_jornadas() if self.controller else print("Click Jornadas")
         )
         self.btnJornadas.grid(row=0, column=1, padx=15, pady=15)
 
-        # !!! CONEXIÓN AQUÍ !!! El botón Voluntarios ahora llama al controlador
         self.btnVoluntarios = tk.Button(
             self.frame_botones, text="🤝\nVoluntarios", font=self.fuente,
             bg="#FFD884", fg="#0b3c5d", width=15, height=5, bd=0, relief="flat", cursor="hand2",
-            command=lambda: self.controller.mostrar_registro_voluntarios() if self.controller else print(
-                "Click Voluntarios")
+            command=lambda: self.controller.mostrar_registro_voluntarios() if self.controller else print("Click Voluntarios")
         )
         self.btnVoluntarios.grid(row=0, column=2, padx=15, pady=15)
 
-        # !!! CONEXIÓN DE ZONAS AQUÍ !!! El botón ahora llama a mostrar_registro_zonas
         self.btnZonas = tk.Button(
             self.frame_botones, text="📍\nZonas", font=self.fuente,
             bg="#94EED1", fg="#0b3c5d", width=15, height=5, bd=0, relief="flat", cursor="hand2",
-            # 🚨 Aquí enlazamos tu Controlador de forma segura:
             command=lambda: self.controller.mostrar_registro_zonas() if self.controller else print("Click Zonas")
         )
         self.btnZonas.grid(row=0, column=3, padx=15, pady=15)
@@ -99,25 +92,29 @@ class PrincipalView(tk.Frame):
         # ---------------- FILA 2 ----------------
         self.btnMaterial = tk.Button(
             self.frame_botones, text="♻️\nMaterial", font=self.fuente,
-            bg="#FFC1BE", fg="#0b3c5d", width=15, height=5, bd=0, relief="flat", cursor="hand2"
+            bg="#FFC1BE", fg="#0b3c5d", width=15, height=5, bd=0, relief="flat", cursor="hand2",
+            command=lambda: self.controller.mostrar_registro_material() if self.controller else print("Click Material")
         )
         self.btnMaterial.grid(row=1, column=0, padx=15, pady=15)
 
         self.btnAnimal = tk.Button(
             self.frame_botones, text="🐢\nAnimal\nAfectado", font=self.fuente,
-            bg="#68EEE1", fg="#0b3c5d", width=15, height=5, bd=0, relief="flat", cursor="hand2"
+            bg="#68EEE1", fg="#0b3c5d", width=15, height=5, bd=0, relief="flat", cursor="hand2",
+            command=lambda: self.controller.mostrar_registro_fauna() if self.controller else print("Click Animal Afectado")
         )
         self.btnAnimal.grid(row=1, column=1, padx=15, pady=15)
 
         self.btnBasura = tk.Button(
             self.frame_botones, text="🗑️\nBasura\nRecolectada", font=self.fuente,
-            bg="#e0ccff", fg="#0b3c5d", width=15, height=5, bd=0, relief="flat", cursor="hand2"
+            bg="#e0ccff", fg="#0b3c5d", width=15, height=5, bd=0, relief="flat", cursor="hand2",
+            command=lambda: self.controller.mostrar_registro_basura() if self.controller else print("Click Basura Recolectada")
         )
         self.btnBasura.grid(row=1, column=2, padx=15, pady=15)
 
         self.btnReporte = tk.Button(
             self.frame_botones, text="📊\nReporte", font=self.fuente,
-            bg="#B7FF84", fg="#0b3c5d", width=15, height=5, bd=0, relief="flat", cursor="hand2"
+            bg="#B7FF84", fg="#0b3c5d", width=15, height=5, bd=0, relief="flat", cursor="hand2",
+            command=lambda: self.controller.mostrar_reporte() if self.controller else print("Click Reporte")
         )
         self.btnReporte.grid(row=1, column=3, padx=15, pady=15)
 
