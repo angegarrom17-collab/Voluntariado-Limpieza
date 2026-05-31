@@ -5,16 +5,19 @@ from view.voluntario_view import VoluntarioVistaModerna
 from view.jornada_view import JornadaVistaModerna
 from view.zona_view import ZonaVista
 
-# 1. IMPORTA LOS COMPONENTES REALES DE VOLUNTARIOS Y JORNADAS
+# 1. IMPORTA LOS COMPONENTES REALES DE VOLUNTARIOS, JORNADAS Y ZONAS
 from repository.voluntario_repository import VoluntarioRepositorio
-from services.voluntario_service import VoluntarioServicio  # Asegúrate si tu carpeta es 'services' o 'service'
-# Nota: Si tienes repositorios para jornada y zona, impórtalos también aquí.
+# 💡 Importamos los repositorios que te hacían falta para quitar los 'None'
+from repository.jornada_repository import JornadaRepositorio
+from repository.zona_repository import ZonaRepository
+
+from services.voluntario_service import VoluntarioServicio
 
 # Importamos tus controladores reales de negocio
 from controller.usuario_controller import ControladorUsuario
 from controller.zona_controller import ControladorZona
-from controller.voluntario_controller import ControladorVoluntario # 🚨 Importado
-
+from controller.voluntario_controller import ControladorVoluntario
+from controller.jornadas_controller import JornadaController # 💡 Corregido el nombre si era 'jornada_controller'
 
 class AppController:
     def __init__(self, root):
@@ -34,10 +37,18 @@ class AppController:
         self.negocio_zona = ControladorZona()
         self.negocio_zona.set_volver_callback(self.mostrar_menu_principal)
 
-        # 🤝 INICIALIZACIÓN DEL NEGOCIO DE VOLUNTARIOS (Y JORNADAS)
-        # Reemplaza 'None, None' por tus repositorios reales de zonas y jornadas cuando los tengas
+        # 🤝 INICIALIZACIÓN DEL NEGOCIO DE VOLUNTARIOS, ZONAS Y JORNADAS
+        # 💡 Inicializamos los tres repositorios con sus respectivos archivos JSON
         self.voluntario_repo = VoluntarioRepositorio("voluntarios.json")
-        self.voluntario_servicio = VoluntarioServicio(self.voluntario_repo, None, None)
+        self.zona_repo = ZonaRepository("zonas.json")
+        self.jornada_repo = JornadaRepositorio("jornadas.json")
+
+        # 💡 Le pasamos los repositorios reales al servicio para que pueda guardar datos de verdad
+        self.voluntario_servicio = VoluntarioServicio(
+            self.voluntario_repo,
+            self.zona_repo,
+            self.jornada_repo
+        )
 
         self.vista_actual = None
         self.mostrar_menu_principal()
@@ -95,12 +106,7 @@ class AppController:
         # Guardamos la vista en el contenedor principal de la app
         self.vista_actual = controlador_vol.vista
 
-
-
     def registrar_voluntario(self, id_v, nom, tel, edad, corr, org):
-        """Este método interceptará la petición de la vista si decide usar la pasarela directa"""
-        # Nota: Como el VoluntarioController ya maneja esto, al instanciarlo arriba
-        # la vista hablará directamente con él, pero dejamos este método por seguridad si la vista usa AppController.
         pass
 
     # -------------------------------------------------------------
@@ -108,8 +114,15 @@ class AppController:
     # -------------------------------------------------------------
     def mostrar_registro_jornadas(self):
         self.limpiar_contenedor()
-        self.vista_actual = JornadaVistaModerna(self.contenedor, controller=self)
-        self.vista_actual.pack(fill="both", expand=True)
+
+        # Instanciamos el controlador de jornadas pasándole el servicio ya conectado
+        controlador_jornada = JornadaController(
+            root=self.contenedor,
+            servicio=self.voluntario_servicio,
+            app_controller=self
+        )
+        # Asignamos la vista del controlador a la pantalla activa
+        self.vista_actual = controlador_jornada.vista
 
 
 if __name__ == "__main__":
