@@ -61,15 +61,20 @@ class PrincipalView(tk.Frame):
         self.frame_botones.place(x=170, y=170)
 
         # ---------------- FILA 1 ----------------
+        # ---------------- FILA 1 ----------------
         self.btnUsuarios = tk.Button(
             self.frame_botones, text="👤\nUsuarios", font=self.fuente,
-            bg="#94D1EE", fg="#0b3c5d", width=15, height=5, bd=0, relief="flat", cursor="hand2"
+            bg="#94D1EE", fg="#0b3c5d", width=15, height=5, bd=0, relief="flat", cursor="hand2",
+            # 🚨 AGREGA ESTA LÍNEA EXACTAMENTE AQUÍ:
+            command=lambda: self.controller.mostrar_registro_usuarios() if self.controller else print("Click Usuarios")
         )
         self.btnUsuarios.grid(row=0, column=0, padx=15, pady=15)
 
         self.btnJornadas = tk.Button(
             self.frame_botones, text="🌊\nJornadas", font=self.fuente,
-            bg="#98EEA1", fg="#0b3c5d", width=15, height=5, bd=0, relief="flat", cursor="hand2"
+            bg="#98EEA1", fg="#0b3c5d", width=15, height=5, bd=0, relief="flat", cursor="hand2",
+            # 🚨 AGREGA ESTA LÍNEA REVISANDO QUE LLAME A mostrar_registro_jornadas:
+            command=lambda: self.controller.mostrar_registro_jornadas() if self.controller else print("Click Jornadas")
         )
         self.btnJornadas.grid(row=0, column=1, padx=15, pady=15)
 

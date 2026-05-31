@@ -128,6 +128,15 @@ class JornadaVistaModerna(tk.Frame):
         )
         self.btn_reporte.pack(pady=5)
 
+        # Botón para regresar al menú principal
+        self.btn_volver = tk.Button(
+            self, text="⬅ Volver al Menú", font=("Comic Sans MS", 10, "bold"),
+            bg="white", fg="#0b3c5d", bd=0, relief="flat", cursor="hand2",
+            command=lambda: self.controller.mostrar_menu_principal() if self.controller else print("Atrás")
+        )
+        # Posiciónalo arriba a la izquierda donde sea visible sobre tu fondo
+        self.btn_volver.place(x=20, y=20)
+
     def registrar_jornada(self):
         """ Captura los strings de las cajas de texto """
         id_j = self.entries["ID Jornada:"].get().strip()
@@ -155,6 +164,9 @@ class JornadaVistaModerna(tk.Frame):
     def limpiar_campos(self):
         for entry in self.entries.values():
             entry.delete(0, tk.END)
+
+
+
 
 
 # --- EJECUCIÓN DEL MÓDULO INDEPENDIENTE ---
