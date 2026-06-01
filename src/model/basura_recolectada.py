@@ -15,7 +15,6 @@ class BasuraRecolectada:
 
     @classmethod
     def from_dict(cls, data: dict):
-        # CORRECCIÓN DE SEGURIDAD: Convertimos obligatoriamente el peso a float
         try:
             peso = float(data.get("pesoKilos", 0.0))
         except (ValueError, TypeError):

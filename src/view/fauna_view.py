@@ -93,8 +93,6 @@ class FaunaVista(tk.Frame):
             return
 
         if self.controller:
-            # El controlador se encargará de validar, mostrar el error o el éxito,
-            # y limpiar los campos si todo sale bien.
             self.controller.registrar_animal(id_a, esp, est, desc)
 
     def _buscar(self):
