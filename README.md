@@ -1,3 +1,10 @@
+Integrantes:
+
+Angélica Garro Mora C5F344
+
+Angelina Jiménez Salas C5G307
+
+Daniel Rojas Portillo C5J232
 
 1. Descripción:
 Este sistema es diseñado para gestionar el impacto ambiental en zonas costeras. El propósito principal es permitir a los usuarios registrar y monitorear datos sobre fauna afectada y residuos recolectados, facilitando el análisis a través de reportes estadísticos. La aplicación busca ser una herramienta de apoyo para la toma de decisiones en temas de conservación y gestión ambiental.
