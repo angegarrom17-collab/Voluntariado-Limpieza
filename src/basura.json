@@ -1,0 +1,20 @@
+[
+    {
+        "idBasura": "12",
+        "tipoResiduo": "cb818846",
+        "pesoKilos": "vidrio",
+        "fecha": 45454.0
+    },
+    {
+        "idBasura": "12",
+        "tipoResiduo": "58c2f163",
+        "pesoKilos": "vidrio",
+        "fecha": 323.0
+    },
+    {
+        "idBasura": "c955f143",
+        "tipoResiduo": "vidrio",
+        "pesoKilos": 40.0,
+        "fecha": "31-05"
+    }
+]
