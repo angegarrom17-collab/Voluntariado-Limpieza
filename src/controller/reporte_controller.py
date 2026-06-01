@@ -2,11 +2,9 @@ from src.repository.fauna_repository import FaunaRepository
 from src.services.reporte_service import ReporteService
 from src.view.reporte_view import ReporteVista
 
-# CORRECCIÓN: Este nombre debe ser exacto (sin guiones, respetando mayúsculas)
 class ReporteController:
     def __init__(self, parent, app_controller):
         self.app_controller = app_controller
-        # Usamos los nombres por defecto de tu FaunaRepository
         self.repo = FaunaRepository()
         self.service = ReporteService()
         self.vista = ReporteVista(parent, self)

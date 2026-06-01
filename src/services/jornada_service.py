@@ -8,7 +8,6 @@ class JornadaService:
         self.voluntario_repository = voluntario_repository
 
     def registrar_jornada(self, id_jornada, fecha, descripcion, cantidad_basura_total, observaciones, id_zona):
-        # 1. Validaciones básicas de campos vacíos
         if not id_jornada.strip():
             raise ValueError("El ID no puede estar vacio")
         if not fecha.strip():
@@ -22,18 +21,15 @@ class JornadaService:
         if not id_zona.strip():
             raise ValueError("El ID de zona no puede estar vacio")
 
-        # 2. Validación de duplicidad de Jornada
         todas = self.jornada_repository.obtener_todos()
         for j in todas:
             if str(j.get("id_jornada")).strip() == id_jornada.strip():
                 raise ValueError(f"Ya existe jornada con ID {id_jornada}")
 
-        # 3. Validación de existencia de Zona (Con normalización de tipos)
         zona_encontrada = None
         id_zona_input = str(id_zona).strip()
 
         for z in self.zona_repository.obtener_todos():
-            # Convertimos ambos a string para asegurar que la comparación funcione
             if str(z.get("id_zona")).strip() == id_zona_input:
                 zona_encontrada = z
                 break
@@ -41,10 +37,8 @@ class JornadaService:
         if not zona_encontrada:
             raise ValueError(f"La zona con ID '{id_zona}' no existe en el sistema.")
 
-        # 4. Creación y guardado
         jornada = JornadaLimpieza(id_jornada, fecha, descripcion, cantidad_basura_total, observaciones)
 
-        # El repositorio.agregar() debe llamar a _save() internamente
         self.jornada_repository.agregar(jornada)
 
     def obtener_todas_las_jornadas(self):
@@ -61,7 +55,6 @@ class JornadaService:
         if not jornada_dict:
             raise ValueError("La jornada no existe")
 
-        # Convertimos el diccionario a objeto para manipularlo si es necesario
         jornada = JornadaLimpieza.from_dict(jornada_dict)
 
         if self.voluntario_repository:
@@ -77,8 +70,6 @@ class JornadaService:
 
         jornada.voluntarios.append(id_voluntario)
 
-        # Guardado actualizado
-        # Nota: Aquí deberías actualizar el repositorio con el objeto modificado
         self.jornada_repository.actualizar(jornada)
 
     def obtener_reporte_jornadas(self):
