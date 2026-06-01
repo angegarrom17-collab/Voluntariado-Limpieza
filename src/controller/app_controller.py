@@ -101,10 +101,9 @@ class AppController:
         from src.repository.jornada_repository import JornadaRepositorio
         from src.repository.fauna_repository import FaunaRepository
 
-        # 1. Asegúrate de pasar la ruta CORRECTA donde están tus datos
         repo_j = JornadaRepositorio("src/jornadas.json")
         repo_f = FaunaRepository("src/animales.json")
 
-        # 2. Inyecta los repositorios al controlador
-        ReporteController(self.contenedor, self, repo_j, repo_f)
+        self.controlador_reporte = ReporteController(self.contenedor, self, repo_j, repo_f)
+
         self.contenedor.update()

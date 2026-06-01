@@ -22,3 +22,7 @@ class ReporteController:
 
     def obtener_residuos_por_tipo(self):
         return self.service.obtener_residuos_por_tipo(self.repo_f.obtener_basura())
+
+    def volver_inicio(self):
+        self.vista.pack_forget()
+        self.app_controller.mostrar_principal()
