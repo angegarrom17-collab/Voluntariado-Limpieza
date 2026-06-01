@@ -2,7 +2,6 @@ import tkinter as tk
 from tkinter import messagebox, ttk
 from src.view.jornada_view import JornadaVistaModerna
 
-
 class JornadaController:
     def __init__(self, parent, servicio, app_controller):
         self.root = parent
@@ -20,10 +19,8 @@ class JornadaController:
 
         try:
             self.servicio.registrar_jornada(id_j, fecha, desc, cantidad, obs, id_zona)
-
             messagebox.showinfo("Éxito Total", f"Jornada '{id_j}' registrada y guardada exitosamente en el JSON.")
             self.vista.limpiar_campos()
-
         except ValueError as err:
             messagebox.showerror("Error de Validación", str(err))
         except Exception as err:
@@ -58,15 +55,15 @@ class JornadaController:
         tb = ttk.Treeview(frm, columns=cols, show="headings", yscrollcommand=sc.set, height=12)
         sc.config(command=tb.yview)
 
-        tb.heading("id", text="ID");
+        tb.heading("id", text="ID")
         tb.column("id", width=100, anchor="center")
-        tb.heading("fecha", text="Fecha");
+        tb.heading("fecha", text="Fecha")
         tb.column("fecha", width=120, anchor="center")
-        tb.heading("descripcion", text="Descripción");
+        tb.heading("descripcion", text="Descripción")
         tb.column("descripcion", width=280, anchor="w")
-        tb.heading("basura", text="Basura (kg)");
+        tb.heading("basura", text="Basura (kg)")
         tb.column("basura", width=120, anchor="center")
-        tb.heading("voluntarios", text="Voluntarios");
+        tb.heading("voluntarios", text="Voluntarios")
         tb.column("voluntarios", width=130, anchor="center")
         tb.pack(expand=True, fill="both")
 
@@ -80,3 +77,13 @@ class JornadaController:
             ))
 
         tk.Button(win, text="Cerrar", command=win.destroy).pack(pady=15)
+
+    def eliminar_jornada_por_id(self, id_jornada):
+        try:
+            # Llama al servicio usando el nombre correcto definido en el __init__
+            self.servicio.eliminar_jornada(id_jornada)
+            messagebox.showinfo("Éxito", f"La jornada con ID '{id_jornada}' fue eliminada correctamente.")
+            if hasattr(self.vista, 'limpiar_campos'):
+                self.vista.limpiar_campos()
+        except ValueError as e:
+            messagebox.showerror("Error", str(e))
