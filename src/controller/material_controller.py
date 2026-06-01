@@ -23,5 +23,8 @@ class MaterialController:
         self.service.usar_material(id_m, int(cant))
         self.repo.save()
 
+    def eliminar_material(self, id_m):
+        self.repo.delete(id_m)
+
     def volver_inicio(self):
         self.app_controller.mostrar_principal()

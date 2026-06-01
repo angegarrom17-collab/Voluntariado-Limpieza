@@ -34,6 +34,13 @@ class MaterialRepository:
         self._materiales_by_id[material.idMaterial] = material
         self._save()
 
+    def delete(self, idMaterial: str):
+        material = self._materiales_by_id.pop(idMaterial, None)
+        if material is None:
+            raise ValueError(f"No existe material con ID {idMaterial}")
+        self._materiales = [m for m in self._materiales if m.idMaterial != idMaterial]
+        self._save()
+
     def get_by_id(self, idMaterial: str):
         return self._materiales_by_id.get(idMaterial)
 

@@ -61,6 +61,7 @@ class UsuarioVista(tk.Frame):
         fila_enc = tk.Frame(frame, bg=COLOR_FONDO)
         fila_enc.pack(fill="x", pady=(0, 10))
         tk.Label(fila_enc, text="USUARIOS REGISTRADOS", font=("Segoe UI", 10, "bold"), bg=COLOR_FONDO, fg=COLOR_TOPBAR).pack(side="left")
+        tk.Button(fila_enc, text="Borrar por ID", font=("Segoe UI", 9), bg=COLOR_FONDO, fg=COLOR_TOPBAR, bd=1, relief="solid", padx=10, pady=3, cursor="hand2", command=self._borrar_por_id).pack(side="right")
         style = ttk.Style()
         style.theme_use("default")
         style.configure("Cafe.Treeview.Heading", font=("Segoe UI", 9, "bold"), background=COLOR_TOPBAR, foreground=COLOR_TH_FG, relief="flat")
@@ -110,6 +111,25 @@ class UsuarioVista(tk.Frame):
         for u in usuarios:
             self.tabla_usuarios.insert("", "end", values=(u.id_usuario, u.nombre, u.correo, u.tipo))
         self.lbl_footer.config(text=f"Mostrando {len(usuarios)} registro(s)")
+
+
+    def _borrar_por_id(self):
+        id_val = self.entry_id.get().strip()
+        if not id_val:
+            messagebox.showwarning("Atencion", "Ingrese un ID para borrar.")
+            return
+        if not messagebox.askyesno("Confirmar", f"¿Esta seguro de eliminar el registro con ID '{id_val}'?"):
+            return
+        try:
+            if self.controller and hasattr(self.controller, 'eliminar_usuario'):
+                self.controller.eliminar_usuario(id_val)
+                messagebox.showinfo("Exito", "Registro eliminado.")
+                self._limpiar_campos()
+                self._cargar_tabla()
+            else:
+                messagebox.showerror("Error", "Controlador no conectado.")
+        except Exception as e:
+            messagebox.showerror("Error", str(e))
 
     def _salir(self):
         self.controller.volver_inicio()

@@ -31,6 +31,13 @@ class UsuarioRepository:
         self._usuarios_by_id[usuario.id_usuario] = usuario
         self._save()
 
+    def delete(self, id_usuario: str):
+        usuario = self._usuarios_by_id.pop(id_usuario, None)
+        if usuario is None:
+            raise ValueError(f"No existe usuario con ID {id_usuario}")
+        self._usuarios = [u for u in self._usuarios if u.id_usuario != id_usuario]
+        self._save()
+
     def get_by_id(self, id_usuario: str):
         return self._usuarios_by_id.get(id_usuario)
 

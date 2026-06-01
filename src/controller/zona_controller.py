@@ -23,5 +23,8 @@ class ControladorZona:
     def get_all_zonas(self):
         return self.repo.get_all()
 
+    def eliminar_zona(self, id_zona):
+        self.repo.delete(int(id_zona))
+
     def volver_inicio(self):
         self.app_controller.mostrar_principal()

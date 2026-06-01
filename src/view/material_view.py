@@ -64,6 +64,7 @@ class MaterialVista(tk.Frame):
         fila_enc = tk.Frame(frame, bg=COLOR_FONDO)
         fila_enc.pack(fill="x", pady=(0, 10))
         tk.Label(fila_enc, text="MATERIALES REGISTRADOS", font=("Segoe UI", 10, "bold"), bg=COLOR_FONDO, fg=COLOR_TOPBAR).pack(side="left")
+        tk.Button(fila_enc, text="Borrar por ID", font=("Segoe UI", 9), bg=COLOR_CAMPO_BG, fg=COLOR_TOPBAR, bd=1, relief="solid", padx=10, pady=3, cursor="hand2", command=self._borrar_por_id).pack(side="right")
         style = ttk.Style()
         style.theme_use("default")
         style.configure("Material.Treeview.Heading", font=("Segoe UI", 9, "bold"), background=COLOR_TOPBAR, foreground=COLOR_TH_FG, relief="flat")
@@ -147,6 +148,25 @@ class MaterialVista(tk.Frame):
                 tag = "par" if i % 2 == 0 else "impar"
                 self.tabla.insert("", "end", values=(m.idMaterial, m.nombre, m.unidadMedida, m.cantidadDisponible), tags=(tag,))
             self.lbl_footer.config(text=f"Mostrando {len(materiales)} material(es) en inventario")
+
+
+    def _borrar_por_id(self):
+        id_val = self.entry_id.get().strip()
+        if not id_val:
+            messagebox.showwarning("Atencion", "Ingrese un ID para borrar.")
+            return
+        if not messagebox.askyesno("Confirmar", f"¿Esta seguro de eliminar el registro con ID '{id_val}'?"):
+            return
+        try:
+            if self.controller and hasattr(self.controller, 'eliminar_material'):
+                self.controller.eliminar_material(id_val)
+                messagebox.showinfo("Exito", "Registro eliminado.")
+                self._limpiar_campos()
+                self._cargar_tabla()
+            else:
+                messagebox.showerror("Error", "Controlador no conectado.")
+        except Exception as e:
+            messagebox.showerror("Error", str(e))
 
     def _salir(self):
         if self.controller and hasattr(self.controller, "volver_inicio"):
