@@ -1,16 +1,1 @@
-[
-    {
-        "id_zona": 111,
-        "nombre_zona": "playa",
-        "ubicacion": "pz",
-        "nivel_contaminacion": "alto",
-        "descripcion": "mucha basura"
-    },
-    {
-        "id_zona": 11,
-        "nombre_zona": "playa",
-        "ubicacion": "pz",
-        "nivel_contaminacion": "medio",
-        "descripcion": "basuraaa"
-    }
-]
+[]
