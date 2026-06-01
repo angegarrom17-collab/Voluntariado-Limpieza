@@ -10,23 +10,29 @@ class JornadaService:
     def registrar_jornada(self, id_jornada, fecha, descripcion, cantidad_basura_total, observaciones, id_zona,
                           cantidad_voluntarios=0):
 
-        if not id_jornada.strip(): raise ValueError("El ID no puede estar vacio")
-        if not fecha.strip(): raise ValueError("La fecha no puede estar vacia")
-        if not descripcion.strip(): raise ValueError("La descripcion no puede estar vacia")
-        if cantidad_basura_total <= 0: raise ValueError("La basura debe ser mayor a cero")
-        if not observaciones.strip(): raise ValueError("Las observaciones no pueden estar vacias")
-        if not id_zona.strip(): raise ValueError("El ID de zona no puede estar vacio")
+        if not id_jornada.strip(): 
+            raise ValueError("El ID no puede estar vacio")
+        if not fecha.strip(): 
+            raise ValueError("La fecha no puede estar vacia")
+        if not descripcion.strip(): 
+            raise ValueError("La descripcion no puede estar vacia")
+        if cantidad_basura_total <= 0: 
+            raise ValueError("La basura debe ser mayor a cero")
+        if not observaciones.strip(): 
+            raise ValueError("Las observaciones no pueden estar vacias")
+        if not id_zona.strip(): 
+            raise ValueError("El ID de zona no puede estar vacio")
 
-        # 2. Validar duplicados y zona
+        #Validar duplicados y zona
         todas = self.jornada_repository.obtener_todos()
-        for j in todas:
-            if str(j.get("id_jornada")).strip() == id_jornada.strip():
+        for jornada in todas:
+            if str(jornada.get("id_jornada")).strip() == id_jornada.strip():
                 raise ValueError(f"Ya existe jornada con ID {id_jornada}")
 
         zona_encontrada = None
-        for z in self.zona_repository.obtener_todos():
-            if str(z.get("id_zona")).strip() == str(id_zona).strip():
-                zona_encontrada = z
+        for zona in self.zona_repository.obtener_todos():
+            if str(zona.get("id_zona")).strip() == str(id_zona).strip():
+                zona_encontrada = zona
                 break
         if not zona_encontrada:
             raise ValueError(f"La zona con ID '{id_zona}' no existe.")
@@ -43,9 +49,9 @@ class JornadaService:
         return self.jornada_repository.obtener_todos()
 
     def buscar_jornada_por_id(self, id_jornada):
-        for j in self.jornada_repository.obtener_todos():
-            if str(j.get("id_jornada")) == str(id_jornada):
-                return j
+        for jorna in self.jornada_repository.obtener_todos():
+            if str(jorna.get("id_jornada")) == str(id_jornada):
+                return jorna
         return None
 
     def asignar_voluntario_a_jornada(self, id_jornada, id_voluntario):
@@ -73,13 +79,13 @@ class JornadaService:
     def obtener_reporte_jornadas(self):
         jornadas = self.obtener_todas_las_jornadas()
         reporte = []
-        for j in jornadas:
+        for jorna in jornadas:
             reporte.append({
-                "ID": j.get("id_jornada"),
-                "Fecha": j.get("fecha"),
-                "Descripcion": j.get("descripcion"),
-                "Basura (kg)": j.get("cantidad_basura_total"),
-                "Voluntarios": len(j.get("voluntarios", []))
+                "ID": jorna.get("id_jornada"),
+                "Fecha": jorna.get("fecha"),
+                "Descripcion": jorna.get("descripcion"),
+                "Basura (kg)": jorna.get("cantidad_basura_total"),
+                "Voluntarios": len(jorna.get("voluntarios", []))
             })
         return reporte
 

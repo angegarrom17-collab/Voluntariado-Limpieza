@@ -10,13 +10,15 @@ class PrincipalView(tk.Frame):
         self._build_interface()
 
     def _build_interface(self):
+        # Esta línea construye la ruta desde la carpeta raíz del proyecto
+        import os
+        ruta_imagen = os.path.join("src", "view", "marr.png")
+
         try:
-            imagen = Image.open("view/marr.png")
+            imagen = Image.open(ruta_imagen)
         except FileNotFoundError:
-            try:
-                imagen = Image.open("marr.png")
-            except FileNotFoundError:
-                imagen = Image.new("RGB", (1000, 650), "#BEEED9")
+            imagen = Image.new("RGB", (1000, 650), "#BEEED9")
+
         imagen = imagen.resize((1000, 650))
         self.fondo = ImageTk.PhotoImage(imagen)
         tk.Label(self, image=self.fondo).place(x=0, y=0, relwidth=1, relheight=1)

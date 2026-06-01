@@ -4,7 +4,7 @@ from src.model.animal_afectado import AnimalAfectado
 from src.model.basura_recolectada import BasuraRecolectada
 
 class FaunaRepository:
-    def __init__(self, filename_animales="animales.json", filename_basura="basura.json"):
+    def __init__(self, filename_animales="src/animales.json", filename_basura="src/basura.json"):
         self.filename_animales = filename_animales
         self.filename_basura = filename_basura
         self._animales = []
@@ -12,7 +12,7 @@ class FaunaRepository:
         self._load()
 
     def _load(self):
-        # Carga segura de animales
+        #------------Carga de animales--------------------
         if os.path.exists(self.filename_animales):
             try:
                 with open(self.filename_animales, "r", encoding="utf-8") as f:
@@ -26,7 +26,7 @@ class FaunaRepository:
         else:
             self._animales = []
 
-        # Carga segura de basura
+        #--------------Carga de basura---------------------
         if os.path.exists(self.filename_basura):
             try:
                 with open(self.filename_basura, "r", encoding="utf-8") as f:
@@ -63,7 +63,7 @@ class FaunaRepository:
     def eliminar_animal(self, id_animal: str):
         self._load()
         original_len = len(self._animales)
-        self._animales = [a for a in self._animales if str(getattr(a, "idAnimal", "")).strip() != str(id_animal).strip()]
+        self._animales = [anim for anim in self._animales if str(getattr(anim, "idAnimal", "")).strip() != str(id_animal).strip()]
         if len(self._animales) == original_len:
             raise ValueError(f"No existe animal con ID {id_animal}")
         self._save_animales()
@@ -83,3 +83,4 @@ class FaunaRepository:
     def obtener_basura(self):
         self._load()
         return self._basura
+

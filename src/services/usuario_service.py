@@ -2,6 +2,7 @@ import hashlib
 from src.model.usuario import Usuario
 
 class UsuarioService:
+
     def __init__(self, usuario_repository):
         self.usuario_repository = usuario_repository
 

@@ -1,1 +1,8 @@
-[]
+[
+    {
+        "idAnimal": "12",
+        "especie": "tortu",
+        "estado": "herido",
+        "descripcion": "pata mala"
+    }
+]

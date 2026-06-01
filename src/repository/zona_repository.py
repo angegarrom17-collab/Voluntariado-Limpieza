@@ -49,3 +49,4 @@ class ZonaRepository:
 
     def exists(self, id_zona: int) -> bool:
         return id_zona in self._zonas_by_id
+

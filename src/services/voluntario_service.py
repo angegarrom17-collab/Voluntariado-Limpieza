@@ -10,8 +10,8 @@ class VoluntarioService:
         self._inicializar_ids()
 
     def _inicializar_ids(self):
-        for v in self.voluntario_repository.obtener_todos():
-            self._ids_registrados.add(v.get("id_voluntario", ""))
+        for volu in self.voluntario_repository.obtener_todos():
+            self._ids_registrados.add(volu.get("id_voluntario", ""))
 
     def registrar_voluntario(self, id_voluntario, nombre, telefono, edad, correo, organizacion):
         valores = (id_voluntario, nombre, telefono, correo, organizacion)
@@ -59,5 +59,4 @@ class VoluntarioService:
         if not voluntario_encontrado:
             raise ValueError(f"No se encontró un voluntario con ID '{id_voluntario}'.")
 
-        # Lo borramos del repositorio (si tu repo usa .eliminar())
         self.voluntario_repository.eliminar(voluntario_encontrado)

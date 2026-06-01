@@ -29,8 +29,6 @@ class VoluntarioRepositorio:
         self._save()
 
     def eliminar(self, voluntario):
-        # 1. Buscamos el voluntario en la lista y lo eliminamos
         if voluntario in self._voluntarios:
             self._voluntarios.remove(voluntario)
-            # 2. Guardamos los cambios en el archivo JSON
             self._save()

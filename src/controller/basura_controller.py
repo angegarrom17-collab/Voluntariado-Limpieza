@@ -6,7 +6,7 @@ from src.view.basura_recolectada_view import BasuraRecolectadaVista
 class BasuraController:
     def __init__(self, parent, app_controller):
         self.app_controller = app_controller
-        self.repo = FaunaRepository("animales.json", "basura.json")
+        self.repo = FaunaRepository("src/animales.json", "src/basura.json")
         self.service = FaunaService(self.repo)
         self.vista = BasuraRecolectadaVista(parent, self)
         self.vista.pack(fill="both", expand=True)

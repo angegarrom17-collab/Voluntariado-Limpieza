@@ -5,7 +5,7 @@ from src.view.usuario_view import UsuarioVista
 class ControladorUsuario:
     def __init__(self, parent, app_controller):
         self.app_controller = app_controller
-        self.repo = UsuarioRepository("usuarios.json")
+        self.repo = UsuarioRepository("src/usuarios.json")
         self.service = UsuarioService(self.repo)
         self.vista = UsuarioVista(parent, self)
         self.vista.pack(fill="both", expand=True)

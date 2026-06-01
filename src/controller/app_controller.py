@@ -37,8 +37,8 @@ class AppController:
         from src.services.jornada_service import JornadaService
         from src.controller.jornadas_controller import JornadaController
 
-        repo_j = JornadaRepositorio("jornadas.json")
-        repo_z = ZonaRepository("zonas.json")
+        repo_j = JornadaRepositorio("src/jornadas.json")
+        repo_z = ZonaRepository("src/zonas.json")
         service = JornadaService(repo_j, repo_z)
 
         self._mostrar_vista(JornadaController, service, self)
@@ -53,7 +53,11 @@ class AppController:
 
     def mostrar_registro_zonas(self):
         from src.controller.zona_controller import ControladorZona
-        self._mostrar_vista(ControladorZona, self)
+        self._limpiar_contenedor()
+        # Creamos el controlador y él mismo crea y guarda la vista en self.vista
+        controlador = ControladorZona(self.contenedor, self)
+        controlador.vista.pack(fill="both", expand=True)
+        self.contenedor.update()
 
     def mostrar_registro_material(self):
         self._limpiar_contenedor()
@@ -70,7 +74,7 @@ class AppController:
         from src.services.fauna_service import FaunaService
         from src.controller.fauna_controller import FaunaController
 
-        repo_fauna = FaunaRepository("animales.json")
+        repo_fauna = FaunaRepository("src/animales.json")
         servicio_fauna = FaunaService(repo_fauna)
 
         FaunaController(self.contenedor, self)
@@ -84,7 +88,7 @@ class AppController:
         from src.services.fauna_service import FaunaService
         from src.controller.basura_controller import BasuraController
 
-        repo_fauna = FaunaRepository("animales.json")
+        repo_fauna = FaunaRepository("src/animales.json")
         servicio_fauna = FaunaService(repo_fauna)
 
         BasuraController(self.contenedor, self)
@@ -93,9 +97,14 @@ class AppController:
 
     def mostrar_reporte(self):
         self._limpiar_contenedor()
-
         from src.controller.reporte_controller import ReporteController
+        from src.repository.jornada_repository import JornadaRepositorio
+        from src.repository.fauna_repository import FaunaRepository
 
-        ReporteController(self.contenedor, self)
+        # 1. Asegúrate de pasar la ruta CORRECTA donde están tus datos
+        repo_j = JornadaRepositorio("src/jornadas.json")
+        repo_f = FaunaRepository("src/animales.json")
 
+        # 2. Inyecta los repositorios al controlador
+        ReporteController(self.contenedor, self, repo_j, repo_f)
         self.contenedor.update()

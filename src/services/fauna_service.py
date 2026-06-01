@@ -16,8 +16,8 @@ class FaunaService:
         if estado_norm not in ["vivo", "herido", "muerto"]:
             raise ValueError("El estado debe ser: vivo, herido o muerto")
 
-        for a in self.obtener_animales():
-            if str(getattr(a, "idAnimal", "")).strip() == id_animal.strip():
+        for animal in self.obtener_animales():
+            if str(getattr(animal, "idAnimal", "")).strip() == id_animal.strip():
                 raise ValueError(f"Ya existe un animal registrado con el ID '{id_animal}'")
 
         animal = AnimalAfectado(id_animal, especie, estado_norm, descripcion)
@@ -33,8 +33,8 @@ class FaunaService:
         if not fecha.strip():
             raise ValueError("La fecha no puede estar vacía")
 
-        for b in self.obtener_basura():
-            if str(getattr(b, "idBasura", "")).strip() == id_basura.strip():
+        for basur in self.obtener_basura():
+            if str(getattr(basur, "idBasura", "")).strip() == id_basura.strip():
                 raise ValueError(f"Ya existe un registro de basura con el ID '{id_basura}'")
 
         basura = BasuraRecolectada(id_basura, tipo_residuo, peso_kilos, fecha)
@@ -52,8 +52,8 @@ class FaunaService:
 
         total_animales = len(animales)
 
-        animales_heridos = sum(1 for a in animales if getattr(a, "estado", "").strip().lower() == "herido")
-        animales_muertos = sum(1 for a in animales if getattr(a, "estado", "").strip().lower() == "muerto")
+        animales_heridos = sum(1 for ani in animales if getattr(ani, "estado", "").strip().lower() == "herido")
+        animales_muertos = sum(1 for ani in animales if getattr(ani, "estado", "").strip().lower() == "muerto")
 
         total_basura_kg = 0.0
         for b in basura:

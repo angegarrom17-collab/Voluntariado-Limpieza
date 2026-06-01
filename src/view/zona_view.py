@@ -90,23 +90,45 @@ class ZonaVista(tk.Frame):
         self._cargar_tabla()
 
     def _registrar(self):
+        # 1. Obtenemos datos
+        id_raw = self.entry_id_zona.get().strip()
+        nombre = self.entry_nombre_zona.get().strip()
+        ubicacion = self.entry_ubicacion.get().strip()
+        nivel = self.entry_nivel_contaminacion.get().strip().lower()
+        desc = self.entry_descripcion.get().strip()
+
+        #Validación de campos vacíos
+        if not all([id_raw, nombre, ubicacion, nivel]):
+            messagebox.showwarning("Atención", "Complete todos los campos obligatorios.")
+            return
+
+        #Validación entero ID
         try:
-            id_zona = self.entry_id_zona.get().strip()
-            nombre_zona = self.entry_nombre_zona.get().strip()
-            ubicacion = self.entry_ubicacion.get().strip()
-            nivel_contaminacion = self.entry_nivel_contaminacion.get().strip()
-            descripcion = self.entry_descripcion.get().strip()
-            if not all([id_zona, nombre_zona, ubicacion, nivel_contaminacion]):
-                messagebox.showwarning("Atencion", "Complete los campos obligatorios.")
-                return
-            self.controller.registrar_zona(int(id_zona), nombre_zona, ubicacion, nivel_contaminacion, descripcion)
-            messagebox.showinfo("Exito", f"Zona '{nombre_zona}' registrada.")
+            id_int = int(id_raw)
+        except ValueError:
+            messagebox.showerror("Error", "El ID debe ser un número entero.")
+            return
+
+        #Validación de Niveles
+        niveles_validos = ["bajo", "medio", "alto", "critico"]
+        if nivel not in niveles_validos:
+            messagebox.showerror("Error", f"Nivel inválido. Use: {', '.join(niveles_validos)}")
+            return
+
+        #Validación de Duplicados
+        zonas_existentes = self.controller.get_all_zonas()
+        if any(z.id_zona == id_int for z in zonas_existentes):
+            messagebox.showerror("Error", f"Ya existe una zona con el ID {id_int}.")
+            return
+
+        #Registra
+        try:
+            self.controller.registrar_zona(id_int, nombre, ubicacion, nivel, desc)
+            messagebox.showinfo("Éxito", f"Zona '{nombre}' registrada correctamente.")
             self._limpiar_campos()
             self._cargar_tabla()
-        except ValueError:
-            messagebox.showerror("Error", "El ID Zona debe ser un numero entero.")
         except Exception as e:
-            messagebox.showerror("Error", str(e))
+            messagebox.showerror("Error inesperado", str(e))
 
     def _limpiar_campos(self):
         for attr in ("entry_id_zona", "entry_nombre_zona", "entry_ubicacion", "entry_nivel_contaminacion", "entry_descripcion"):

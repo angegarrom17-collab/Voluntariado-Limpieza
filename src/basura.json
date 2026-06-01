@@ -2,13 +2,13 @@
     {
         "idBasura": "12",
         "tipoResiduo": "cb818846",
-        "pesoKilos": "vidrio",
+        "pesoKilos": 0.0,
         "fecha": 45454.0
     },
     {
         "idBasura": "12",
         "tipoResiduo": "58c2f163",
-        "pesoKilos": "vidrio",
+        "pesoKilos": 0.0,
         "fecha": 323.0
     },
     {
@@ -16,5 +16,11 @@
         "tipoResiduo": "vidrio",
         "pesoKilos": 40.0,
         "fecha": "31-05"
+    },
+    {
+        "idBasura": "9423d892",
+        "tipoResiduo": "plastico",
+        "pesoKilos": 80.0,
+        "fecha": "21-07"
     }
 ]

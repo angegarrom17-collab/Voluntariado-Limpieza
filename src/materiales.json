@@ -1,1 +1,8 @@
-[]
+[
+    {
+        "idMaterial": "13",
+        "nombre": "d",
+        "unidadMedida": "pc",
+        "cantidadDisponible": 90
+    }
+]

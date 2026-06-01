@@ -9,7 +9,7 @@ class FaunaController:
     def __init__(self, parent, app_controller):
         self.root = parent
         self.app_controller = app_controller
-        self.repo = FaunaRepository("animales.json")
+        self.repo = FaunaRepository("src/animales.json")
         self.service = FaunaService(self.repo)
         self.vista = FaunaVista(parent, self)
         self.vista.pack(fill="both", expand=True)

@@ -5,7 +5,7 @@ from src.view.material_view import MaterialVista
 class MaterialController:
     def __init__(self, parent, app_controller):
         self.app_controller = app_controller
-        self.repo = MaterialRepository("materiales.json")
+        self.repo = MaterialRepository("src/materiales.json")
         self.service = MaterialService(self.repo)
         self.vista = MaterialVista(parent, self)
         self.vista.pack(fill="both", expand=True)

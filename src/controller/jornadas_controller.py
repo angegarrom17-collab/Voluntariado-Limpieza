@@ -20,7 +20,7 @@ class JornadaController:
             return
 
         try:
-            #Pasamos el nuevo dato al servicio
+            #Se pasa el nuevo dato al servicio
             self.servicio.registrar_jornada(id_j, fecha, desc, cantidad, obs, id_zona, voluntarios)
             messagebox.showinfo("Éxito", f"Jornada '{id_j}' registrada.")
             self.vista.limpiar_campos()
@@ -67,13 +67,13 @@ class JornadaController:
         tb.column("voluntarios", width=130, anchor="center")
         tb.pack(expand=True, fill="both")
 
-        for j in lista:
+        for jornada in lista:
             tb.insert("", tk.END, values=(
-                j.get("ID", j.get("id_jornada", "")),
-                j.get("Fecha", j.get("fecha", "")),
-                j.get("Descripcion", j.get("descripcion", "")),
-                j.get("Basura (kg)", j.get("cantidad_basura_total", 0)),
-                j.get("Voluntarios", j.get("voluntarios", 0))
+                jornada.get("ID", jornada.get("id_jornada", "")),
+                jornada.get("Fecha", jornada.get("fecha", "")),
+                jornada.get("Descripcion", jornada.get("descripcion", "")),
+                jornada.get("Basura (kg)", jornada.get("cantidad_basura_total", 0)),
+                jornada.get("Voluntarios", jornada.get("voluntarios", 0))
             ))
 
         tk.Button(win, text="Cerrar", command=win.destroy).pack(pady=15)

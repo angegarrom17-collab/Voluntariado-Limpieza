@@ -8,7 +8,7 @@ class ControladorVoluntario:
     def __init__(self, parent, app_controller):
         self.root = parent
         self.app_controller = app_controller
-        self.repo = VoluntarioRepositorio("voluntarios.json")
+        self.repo = VoluntarioRepositorio("src/voluntarios.json")
         self.service = VoluntarioService(self.repo)
         self.vista = VoluntarioVistaModerna(self.root, controller=self)
         self.vista.pack(fill="both", expand=True)
@@ -56,7 +56,6 @@ class ControladorVoluntario:
 
     def eliminar_voluntario_por_id(self, id_voluntario):
         try:
-            # Cambia 'self.servicio' por 'self.service' (o el nombre que tenga en tu __init__)
             self.service.eliminar_voluntario(id_voluntario)
 
             messagebox.showinfo("Éxito", f"El voluntario con ID '{id_voluntario}' fue eliminado.")
