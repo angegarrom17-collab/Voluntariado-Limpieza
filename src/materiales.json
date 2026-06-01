@@ -4,5 +4,11 @@
         "nombre": "d",
         "unidadMedida": "pc",
         "cantidadDisponible": 90
+    },
+    {
+        "idMaterial": "44",
+        "nombre": "Bolsas",
+        "unidadMedida": "kg",
+        "cantidadDisponible": 55
     }
 ]

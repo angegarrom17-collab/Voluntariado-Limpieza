@@ -22,5 +22,11 @@
         "tipoResiduo": "plastico",
         "pesoKilos": 80.0,
         "fecha": "21-07"
+    },
+    {
+        "idBasura": "52b390d0",
+        "tipoResiduo": "Metal",
+        "pesoKilos": 150.0,
+        "fecha": "31-02"
     }
 ]

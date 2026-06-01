@@ -4,5 +4,11 @@
         "especie": "tortu",
         "estado": "herido",
         "descripcion": "pata mala"
+    },
+    {
+        "idAnimal": "33",
+        "especie": "Pez",
+        "estado": "herido",
+        "descripcion": "azul"
     }
 ]

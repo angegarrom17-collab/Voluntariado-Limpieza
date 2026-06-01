@@ -19,5 +19,19 @@
         "correo": "pp@gmail",
         "contrasena": "8697e8189037e76ce6e1be276be33265def98696e240637666299b38e70ccc1e",
         "tipo": "encargado"
+    },
+    {
+        "id_usuario": "123",
+        "nombre": "daniel",
+        "correo": "daniel@ucr.com",
+        "contrasena": "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
+        "tipo": "encargado"
+    },
+    {
+        "id_usuario": "15",
+        "nombre": "user",
+        "correo": "user@user.user",
+        "contrasena": "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
+        "tipo": "encargado"
     }
 ]
