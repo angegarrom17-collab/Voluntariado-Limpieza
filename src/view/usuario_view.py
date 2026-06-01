@@ -61,7 +61,6 @@ class UsuarioVista(tk.Frame):
         fila_enc = tk.Frame(frame, bg=COLOR_FONDO)
         fila_enc.pack(fill="x", pady=(0, 10))
         tk.Label(fila_enc, text="USUARIOS REGISTRADOS", font=("Segoe UI", 10, "bold"), bg=COLOR_FONDO, fg=COLOR_TOPBAR).pack(side="left")
-        tk.Button(fila_enc, text="Actualizar", font=("Segoe UI", 9), bg=COLOR_FONDO, fg=COLOR_TOPBAR, bd=1, relief="solid", padx=10, pady=3, cursor="hand2", command=self._cargar_tabla).pack(side="right")
         style = ttk.Style()
         style.theme_use("default")
         style.configure("Cafe.Treeview.Heading", font=("Segoe UI", 9, "bold"), background=COLOR_TOPBAR, foreground=COLOR_TH_FG, relief="flat")
