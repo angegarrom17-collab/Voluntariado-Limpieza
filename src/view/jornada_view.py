@@ -93,7 +93,7 @@ class JornadaVistaModerna(tk.Frame):
         self.btn_reporte.grid(row=1, column=1, padx=10, pady=6)
 
         # Botón Volver al Menú: Minimalista integrado a la esquina
-        self.btn_volver = tk.Button(self, text="← Volver al Menú", font=("Arial", 10, "bold"),
+        self.btn_volver = tk.Button(self, text="Salir", font=("Arial", 10, "bold"),
                                     bg="#2C3E50", fg="#FFFFFF", activebackground="#1A252F", activeforeground="#FFFFFF",
                                     bd=0, cursor="hand2", padx=12, pady=4,
                                     command=lambda: self.controller.mostrar_menu_principal() if self.controller else None)

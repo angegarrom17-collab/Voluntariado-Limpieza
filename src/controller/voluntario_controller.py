@@ -53,3 +53,14 @@ class ControladorVoluntario:
 
     def mostrar_menu_principal(self):
         self.app_controller.mostrar_principal()
+
+    def eliminar_voluntario_por_id(self, id_voluntario):
+        try:
+            # Cambia 'self.servicio' por 'self.service' (o el nombre que tenga en tu __init__)
+            self.service.eliminar_voluntario(id_voluntario)
+
+            messagebox.showinfo("Éxito", f"El voluntario con ID '{id_voluntario}' fue eliminado.")
+            self.vista._limpiar_campos()
+
+        except ValueError as e:
+            messagebox.showerror("Error", str(e))

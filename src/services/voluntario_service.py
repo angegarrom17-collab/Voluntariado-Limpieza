@@ -43,3 +43,21 @@ class VoluntarioService:
     def obtener_organizaciones_unicas(self) -> set:
         todos = self.voluntario_repository.obtener_todos()
         return {v.get("organizacion", "") for v in todos if v.get("organizacion")}
+
+    def eliminar_voluntario(self, id_voluntario):
+        if not id_voluntario.strip():
+            raise ValueError("El ID no puede estar vacío.")
+
+        voluntarios = self.voluntario_repository.obtener_todos()
+        voluntario_encontrado = None
+
+        for v in voluntarios:
+            if str(v.get("id_voluntario", "")).strip() == id_voluntario.strip():
+                voluntario_encontrado = v
+                break
+
+        if not voluntario_encontrado:
+            raise ValueError(f"No se encontró un voluntario con ID '{id_voluntario}'.")
+
+        # Lo borramos del repositorio (si tu repo usa .eliminar())
+        self.voluntario_repository.eliminar(voluntario_encontrado)
