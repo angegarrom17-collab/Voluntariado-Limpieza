@@ -12,5 +12,12 @@
         "correo": "britney@gmail.com",
         "contrasena": "f79b8c4e29a3c781b160984217c8177ed7d8bdb40a511e6f2485591459a8f6eb",
         "tipo": "encargado"
+    },
+    {
+        "id_usuario": "111",
+        "nombre": "hola",
+        "correo": "pp@gmail",
+        "contrasena": "8697e8189037e76ce6e1be276be33265def98696e240637666299b38e70ccc1e",
+        "tipo": "encargado"
     }
 ]
