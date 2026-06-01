@@ -16,5 +16,8 @@ class ControladorUsuario:
     def get_all_usuarios(self):
         return self.service.get_all_usuarios()
 
+    def eliminar_usuario(self, id_usuario):
+        self.repo.delete(id_usuario)
+
     def volver_inicio(self):
         self.app_controller.mostrar_principal()

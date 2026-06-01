@@ -31,6 +31,13 @@ class ZonaRepository:
         self._zonas_by_id[zona.id_zona] = zona
         self._save()
 
+    def delete(self, id_zona: int):
+        zona = self._zonas_by_id.pop(id_zona, None)
+        if zona is None:
+            raise ValueError(f"No existe zona con ID {id_zona}")
+        self._zonas = [z for z in self._zonas if z.id_zona != id_zona]
+        self._save()
+
     def get_by_id(self, id_zona: int):
         return self._zonas_by_id.get(id_zona)
 

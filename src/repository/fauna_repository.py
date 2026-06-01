@@ -17,7 +17,6 @@ class FaunaRepository:
             try:
                 with open(self.filename_animales, "r", encoding="utf-8") as f:
                     data = json.load(f)
-                    # Si el archivo está vacío o no es una lista, asegurar una lista vacía
                     if isinstance(data, list):
                         self._animales = [AnimalAfectado.from_dict(item) for item in data]
                     else:
@@ -52,19 +51,35 @@ class FaunaRepository:
             json.dump(data, f, indent=4, ensure_ascii=False)
 
     def agregar_animal(self, animal: AnimalAfectado):
-        self._load()  # Recargamos para asegurar consistencia con el disco
+        self._load()
         self._animales.append(animal)
         self._save_animales()
 
     def agregar_basura(self, basura: BasuraRecolectada):
-        self._load()  # Recargamos para asegurar consistencia con el disco
+        self._load()
         self._basura.append(basura)
         self._save_basura()
 
+    def eliminar_animal(self, id_animal: str):
+        self._load()
+        original_len = len(self._animales)
+        self._animales = [a for a in self._animales if str(getattr(a, "idAnimal", "")).strip() != str(id_animal).strip()]
+        if len(self._animales) == original_len:
+            raise ValueError(f"No existe animal con ID {id_animal}")
+        self._save_animales()
+
+    def eliminar_basura(self, id_basura: str):
+        self._load()
+        original_len = len(self._basura)
+        self._basura = [b for b in self._basura if str(getattr(b, "idBasura", "")).strip() != str(id_basura).strip()]
+        if len(self._basura) == original_len:
+            raise ValueError(f"No existe registro de basura con ID {id_basura}")
+        self._save_basura()
+
     def obtener_animales(self):
-        self._load()  # Forzamos la lectura fresca del JSON
+        self._load()
         return self._animales
 
     def obtener_basura(self):
-        self._load()  # Forzamos la lectura fresca del JSON
+        self._load()
         return self._basura
