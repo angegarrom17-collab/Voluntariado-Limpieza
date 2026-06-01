@@ -12,28 +12,19 @@ class JornadaController:
         self.vista.pack(fill="both", expand=True)
 
     def registrar_nueva_jornada(self, id_j, fecha, desc, basura_str, obs, id_zona):
-        # 1. Validar el formato numérico antes de enviarlo al servicio
         try:
             cantidad = int(basura_str)
         except ValueError:
             messagebox.showerror("Error de Formato", "La cantidad de basura (kg) debe ser un número entero.")
             return
 
-        # 2. Intentar guardar en las capas internas
         try:
-            # Llamamos al servicio. Si lanza un ValueError (ID duplicado, zona inválida),
-            # la ejecución se detendrá inmediatamente AQUÍ y saltará al bloque 'except ValueError'
             self.servicio.registrar_jornada(id_j, fecha, desc, cantidad, obs, id_zona)
-
-            # ESTE CÓDIGO SOLO SE EJECUTA SI EL SERVICIO SE COMPLETÓ SIN ERRORES
             messagebox.showinfo("Éxito Total", f"Jornada '{id_j}' registrada y guardada exitosamente en el JSON.")
             self.vista.limpiar_campos()
-
         except ValueError as err:
-            # Aquí caen TODOS los errores controlados que programamos en tu Service
             messagebox.showerror("Error de Validación", str(err))
         except Exception as err:
-            # Aquí caen problemas del sistema, archivos JSON corruptos, etc.
             messagebox.showerror("Error Crítico de Sistema", f"No se pudo escribir en el archivo:\n{str(err)}")
             print(f"--- TRACEBACK ERROR SISTEMA ---\n{err}\n-------------------------------")
 
@@ -65,15 +56,15 @@ class JornadaController:
         tb = ttk.Treeview(frm, columns=cols, show="headings", yscrollcommand=sc.set, height=12)
         sc.config(command=tb.yview)
 
-        tb.heading("id", text="ID");
+        tb.heading("id", text="ID")
         tb.column("id", width=100, anchor="center")
-        tb.heading("fecha", text="Fecha");
+        tb.heading("fecha", text="Fecha")
         tb.column("fecha", width=120, anchor="center")
-        tb.heading("descripcion", text="Descripción");
+        tb.heading("descripcion", text="Descripción")
         tb.column("descripcion", width=280, anchor="w")
-        tb.heading("basura", text="Basura (kg)");
+        tb.heading("basura", text="Basura (kg)")
         tb.column("basura", width=120, anchor="center")
-        tb.heading("voluntarios", text="Voluntarios");
+        tb.heading("voluntarios", text="Voluntarios")
         tb.column("voluntarios", width=130, anchor="center")
         tb.pack(expand=True, fill="both")
 
@@ -87,3 +78,17 @@ class JornadaController:
             ))
 
         tk.Button(win, text="Cerrar", command=win.destroy).pack(pady=15)
+
+    # --- MÉTODO CORREGIDO: SE CAMBIÓ self.jornada_service POR self.servicio ---
+    def eliminar_jornada_por_id(self, id_jornada):
+        try:
+            # Ahora llama al nombre exacto definido en el constructor
+            self.servicio.eliminar_jornada(id_jornada)
+
+            messagebox.showinfo("Éxito", f"La jornada con ID '{id_jornada}' fue eliminada correctamente.")
+
+            if hasattr(self.vista, 'limpiar_campos'):
+                self.vista.limpiar_campos()
+
+        except ValueError as e:
+            messagebox.showerror("Error", str(e))

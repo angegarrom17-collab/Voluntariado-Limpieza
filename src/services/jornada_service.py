@@ -93,3 +93,24 @@ class JornadaService:
                 "Voluntarios": len(j.get("voluntarios", []))
             })
         return reporte
+
+    def eliminar_jornada(self, id_jornada):
+        if not id_jornada.strip():
+            raise ValueError("El ID de la jornada no puede estar vacío.")
+
+        # 1. Traemos la lista actual de jornadas del repositorio (que son diccionarios)
+        jornadas = self.jornada_repository.obtener_todos()
+
+        # 2. Buscamos el diccionario que coincida con el ID
+        jornada_encontrada = None
+        for j in jornadas:
+            if str(j.get("id_jornada", "")).strip() == id_jornada.strip():
+                jornada_encontrada = j
+                break
+
+        # Si no existe, lanzamos el error para que el controlador lo muestre en pantalla
+        if not jornada_encontrada:
+            raise ValueError(f"No se encontró ninguna jornada con el ID '{id_jornada}'.")
+
+        # 3. Le pasamos el diccionario encontrado al método eliminar de tu repositorio
+        self.jornada_repository.eliminar(jornada_encontrada)

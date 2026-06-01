@@ -1,13 +1,5 @@
 [
     {
-        "id_jornada": "222",
-        "fecha": "31",
-        "descripcion": "f",
-        "cantidad_basura_total": 32,
-        "observaciones": "f",
-        "voluntarios": []
-    },
-    {
         "id_jornada": "2",
         "fecha": "31-05-2016",
         "descripcion": "basura botellas",
