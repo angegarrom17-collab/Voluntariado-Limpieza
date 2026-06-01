@@ -10,22 +10,22 @@ class JornadaController:
         self.vista = JornadaVistaModerna(self.root, controller=self)
         self.vista.pack(fill="both", expand=True)
 
-    def registrar_nueva_jornada(self, id_j, fecha, desc, basura_str, obs, id_zona):
+    def registrar_nueva_jornada(self, id_j, fecha, desc, basura_str, obs, id_zona,voluntarios_str):
+
         try:
             cantidad = int(basura_str)
+            voluntarios = int(voluntarios_str)
         except ValueError:
-            messagebox.showerror("Error de Formato", "La cantidad de basura (kg) debe ser un número entero.")
+            messagebox.showerror("Error de Formato", "La cantidad de basura y voluntarios deben ser números enteros.")
             return
 
         try:
-            self.servicio.registrar_jornada(id_j, fecha, desc, cantidad, obs, id_zona)
-            messagebox.showinfo("Éxito Total", f"Jornada '{id_j}' registrada y guardada exitosamente en el JSON.")
+            #Pasamos el nuevo dato al servicio
+            self.servicio.registrar_jornada(id_j, fecha, desc, cantidad, obs, id_zona, voluntarios)
+            messagebox.showinfo("Éxito", f"Jornada '{id_j}' registrada.")
             self.vista.limpiar_campos()
-        except ValueError as err:
-            messagebox.showerror("Error de Validación", str(err))
         except Exception as err:
-            messagebox.showerror("Error Crítico de Sistema", f"No se pudo escribir en el archivo:\n{str(err)}")
-            print(f"--- TRACEBACK ERROR SISTEMA ---\n{err}\n-------------------------------")
+            messagebox.showerror("Error", f"No se pudo guardar: {str(err)}")
 
     def mostrar_menu_principal(self):
         self.app_controller.mostrar_principal()
@@ -73,14 +73,14 @@ class JornadaController:
                 j.get("Fecha", j.get("fecha", "")),
                 j.get("Descripcion", j.get("descripcion", "")),
                 j.get("Basura (kg)", j.get("cantidad_basura_total", 0)),
-                j.get("Voluntarios", 0)
+                j.get("Voluntarios", j.get("voluntarios", 0))
             ))
 
         tk.Button(win, text="Cerrar", command=win.destroy).pack(pady=15)
 
     def eliminar_jornada_por_id(self, id_jornada):
         try:
-            # Llama al servicio usando el nombre correcto definido en el __init__
+            #Llama al servicio
             self.servicio.eliminar_jornada(id_jornada)
             messagebox.showinfo("Éxito", f"La jornada con ID '{id_jornada}' fue eliminada correctamente.")
             if hasattr(self.vista, 'limpiar_campos'):

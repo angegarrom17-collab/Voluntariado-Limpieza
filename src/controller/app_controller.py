@@ -11,13 +11,13 @@ class AppController:
 
     def _limpiar_contenedor(self):
         # Destruimos los widgets anteriores
-        for w in self.contenedor.winfo_children():
-            w.destroy()
+        for widget in self.contenedor.winfo_children():
+            widget.destroy()
         self.vista_actual = None
 
     def _mostrar_vista(self, controlador_clase, *args):
         self._limpiar_contenedor()
-        # Creamos el controlador pasando el contenedor padre
+        #Creamos el controlador pasando el contenedor padre
         controlador = controlador_clase(self.contenedor, *args)
 
         if hasattr(controlador, 'vista'):

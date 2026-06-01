@@ -28,8 +28,6 @@ class JornadaRepositorio:
         self._save()
 
     def eliminar(self, jornada):
-        # 1. La removemos de la lista en memoria (asumiendo que tu lista se llama self._jornadas)
         if jornada in self._jornadas:
             self._jornadas.remove(jornada)
-            # 2. Guardamos la lista actualizada en el archivo jornadas.json
-            self._save()  # Revisa si tu método de guardar se llama _save() o _save_jornadas()
+            self._save()

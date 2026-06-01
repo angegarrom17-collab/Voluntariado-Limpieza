@@ -28,7 +28,7 @@ class JornadaVistaModerna(tk.Frame):
                 imagen_fondo.paste(alga_borde, (10, y), alga_borde)
                 imagen_fondo.paste(alga_borde, (910, y), alga_borde)
         else:
-            # Siluetas en un tono gris-verde oscuro muy sobrio
+            #Siluetas gris
             for y in range(30, alto, 120):
                 draw.chord([(-20, y), (60, y + 100)], 270, 90, fill="#4A6550")
                 draw.chord([(940, y), (1020, y + 100)], 90, 270, fill="#4A6550")
@@ -38,32 +38,32 @@ class JornadaVistaModerna(tk.Frame):
         lbl_fondo.place(x=0, y=0, relwidth=1, relheight=1)
         lbl_fondo.lower()
 
-        # Título principal en Azul Ejecutivo Profundo
+        #Título
         tk.Label(self, text="Registrar Nueva Jornada", font=("Arial", 22, "bold"), bg="#BEEED9",
                  fg="#1F3A52").place(x=250, y=25)
 
         frame_campos = tk.Frame(self, bg="#BEEED9")
         frame_campos.place(x=200, y=110)
 
-        labels_texto = ["ID Jornada:", "Fecha:", "Descripcion:", "Basura (kg):", "Observaciones:", "ID Zona:"]
+        labels_texto = ["ID Jornada:", "Fecha:", "Descripcion:", "Basura (kg):", "Observaciones:", "ID Zona:",
+                        "Voluntarios:"]
         self.entries = {}
         for i, texto in enumerate(labels_texto):
-            # Textos de los campos en gris oscuro corporativo
+            # Textos de los campos
             tk.Label(frame_campos, text=texto, font=("Arial", 11, "bold"), bg="#BEEED9", fg="#2C3E50").grid(
                 row=i, column=0, padx=15, pady=8, sticky="e")
             entry = tk.Entry(frame_campos, font=("Arial", 11), width=42, bd=1, relief="solid", highlightthickness=0)
             entry.grid(row=i, column=1, padx=15, pady=8, sticky="w")
             self.entries[texto] = entry
 
-        # --- PANEL DE BOTONES: GAMA UNIFICADA AZUL MARINO / GRIS CORPORATIVO ---
+        #PANEL DE BOTONES
         frame_botones = tk.Frame(self, bg="#BEEED9")
         frame_botones.place(x=240, y=490)
 
-        # Configuración común para toda la botonera
         estilo_botones = {
             "font": ("Arial", 11, "bold"),
-            "bg": "#2C3E50",  # Azul Marino Corporativo uniforme
-            "fg": "#FFFFFF",  # Texto blanco limpio
+            "bg": "#2C3E50",
+            "fg": "#FFFFFF",
             "activebackground": "#1A252F",
             "activeforeground": "#FFFFFF",
             "width": 20,
@@ -88,7 +88,7 @@ class JornadaVistaModerna(tk.Frame):
         self.btn_reporte = tk.Button(frame_botones, text="Ver Reporte", command=self.ver_reporte, **estilo_botones)
         self.btn_reporte.grid(row=1, column=1, padx=10, pady=6)
 
-        # Botón Volver al Menú: Minimalista integrado a la esquina
+        # Botón Volver al Menu
         self.btn_volver = tk.Button(self, text="Salir", font=("Arial", 10, "bold"),
                                     bg="#2C3E50", fg="#FFFFFF", activebackground="#1A252F", activeforeground="#FFFFFF",
                                     bd=0, cursor="hand2", padx=12, pady=4,
@@ -96,6 +96,7 @@ class JornadaVistaModerna(tk.Frame):
         self.btn_volver.place(x=20, y=20)
 
     # --- LÓGICA DE CONTROL ---
+
     def registrar_jornada(self):
         id_j = self.entries["ID Jornada:"].get().strip()
         fecha = self.entries["Fecha:"].get().strip()
@@ -103,11 +104,11 @@ class JornadaVistaModerna(tk.Frame):
         basura = self.entries["Basura (kg):"].get().strip()
         obs = self.entries["Observaciones:"].get().strip()
         zona = self.entries["ID Zona:"].get().strip()
-        if not all([id_j, fecha, desc, basura, zona]):
-            messagebox.showwarning("Atención", "Complete los campos obligatorios.")
-            return
+        voluntarios = self.entries["Voluntarios:"].get().strip()  # <--- Capturar
+
+
         if self.controller:
-            self.controller.registrar_nueva_jornada(id_j, fecha, desc, basura, obs, zona)
+            self.controller.registrar_nueva_jornada(id_j, fecha, desc, basura, obs, zona, voluntarios)
 
     def eliminar_jornada(self):
         id_j = self.entries["ID Jornada:"].get().strip()

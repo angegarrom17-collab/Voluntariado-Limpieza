@@ -14,10 +14,10 @@ class FaunaController:
         self.vista = FaunaVista(parent, self)
         self.vista.pack(fill="both", expand=True)
 
-    def registrar_animal(self, id_a, esp, est, desc):
+    def registrar_animal(self, id_animal, especie, estado, descripcion):
         try:
-            self.service.registrar_animal(id_a, esp, est, desc)
-            messagebox.showinfo("Éxito", f"Animal '{esp}' registrado correctamente.")
+            self.service.registrar_animal(id_animal, especie, estado, descripcion)
+            messagebox.showinfo("Éxito", f"Animal '{especie}' registrado correctamente.")
             if hasattr(self.vista, 'notificar_registro_exitoso'):
                 self.vista.notificar_registro_exitoso()
         except ValueError as e:
@@ -31,14 +31,14 @@ class FaunaController:
         except Exception:
             return []
 
-    def buscar_animal(self, id_a):
-        for a in self.service.obtener_animales():
-            if str(getattr(a, "idAnimal", "")).strip() == str(id_a).strip():
-                return a
+    def buscar_animal(self, id_animal):
+        for animal in self.service.obtener_animales():
+            if str(getattr(animal, "idAnimal", "")).strip() == str(id_animal).strip():
+                return animal
         return None
 
-    def eliminar_animal(self, id_a):
-        self.repo.eliminar_animal(id_a)
+    def eliminar_animal(self, id_animal):
+        self.repo.eliminar_animal(id_animal)
 
     def volver_inicio(self):
         self.app_controller.mostrar_principal()

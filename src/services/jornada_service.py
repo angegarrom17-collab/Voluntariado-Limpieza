@@ -7,37 +7,35 @@ class JornadaService:
         self.zona_repository = zona_repository
         self.voluntario_repository = voluntario_repository
 
-    def registrar_jornada(self, id_jornada, fecha, descripcion, cantidad_basura_total, observaciones, id_zona):
-        if not id_jornada.strip():
-            raise ValueError("El ID no puede estar vacio")
-        if not fecha.strip():
-            raise ValueError("La fecha no puede estar vacia")
-        if not descripcion.strip():
-            raise ValueError("La descripcion no puede estar vacia")
-        if cantidad_basura_total <= 0:
-            raise ValueError("La basura debe ser mayor a cero")
-        if not observaciones.strip():
-            raise ValueError("Las observaciones no pueden estar vacias")
-        if not id_zona.strip():
-            raise ValueError("El ID de zona no puede estar vacio")
+    def registrar_jornada(self, id_jornada, fecha, descripcion, cantidad_basura_total, observaciones, id_zona,
+                          cantidad_voluntarios=0):
 
+        if not id_jornada.strip(): raise ValueError("El ID no puede estar vacio")
+        if not fecha.strip(): raise ValueError("La fecha no puede estar vacia")
+        if not descripcion.strip(): raise ValueError("La descripcion no puede estar vacia")
+        if cantidad_basura_total <= 0: raise ValueError("La basura debe ser mayor a cero")
+        if not observaciones.strip(): raise ValueError("Las observaciones no pueden estar vacias")
+        if not id_zona.strip(): raise ValueError("El ID de zona no puede estar vacio")
+
+        # 2. Validar duplicados y zona
         todas = self.jornada_repository.obtener_todos()
         for j in todas:
             if str(j.get("id_jornada")).strip() == id_jornada.strip():
                 raise ValueError(f"Ya existe jornada con ID {id_jornada}")
 
         zona_encontrada = None
-        id_zona_input = str(id_zona).strip()
-
         for z in self.zona_repository.obtener_todos():
-            if str(z.get("id_zona")).strip() == id_zona_input:
+            if str(z.get("id_zona")).strip() == str(id_zona).strip():
                 zona_encontrada = z
                 break
-
         if not zona_encontrada:
-            raise ValueError(f"La zona con ID '{id_zona}' no existe en el sistema.")
+            raise ValueError(f"La zona con ID '{id_zona}' no existe.")
 
+        #cantidad de voluntarios al modelo
         jornada = JornadaLimpieza(id_jornada, fecha, descripcion, cantidad_basura_total, observaciones)
+
+        if cantidad_voluntarios > 0:
+            jornada.voluntarios = ["Voluntario Inicial"] * cantidad_voluntarios
 
         self.jornada_repository.agregar(jornada)
 
@@ -89,19 +87,14 @@ class JornadaService:
         if not id_jornada.strip():
             raise ValueError("El ID de la jornada no puede estar vacío.")
 
-        # 1. Traemos la lista actual de jornadas del repositorio (que son diccionarios)
         jornadas = self.jornada_repository.obtener_todos()
 
-        # 2. Buscamos el diccionario que coincida con el ID
         jornada_encontrada = None
         for j in jornadas:
             if str(j.get("id_jornada", "")).strip() == id_jornada.strip():
                 jornada_encontrada = j
                 break
 
-        # Si no existe, lanzamos el error para que el controlador lo muestre en pantalla
         if not jornada_encontrada:
             raise ValueError(f"No se encontró ninguna jornada con el ID '{id_jornada}'.")
-
-        # 3. Le pasamos el diccionario encontrado al método eliminar de tu repositorio
         self.jornada_repository.eliminar(jornada_encontrada)
