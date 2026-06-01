@@ -5,5 +5,12 @@
         "correo": "angeee@gmail.com",
         "contrasena": "d13b83975addbe2c3c9b67836302e12eaf36b4d5a510fd6b338addf521b94a5f",
         "tipo": "encargado"
+    },
+    {
+        "id_usuario": "0062",
+        "nombre": "britney",
+        "correo": "britney@gmail.com",
+        "contrasena": "f79b8c4e29a3c781b160984217c8177ed7d8bdb40a511e6f2485591459a8f6eb",
+        "tipo": "encargado"
     }
 ]

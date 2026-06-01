@@ -4,20 +4,17 @@ import tkinter as tk
 class AppController:
     def __init__(self, root):
         self.root = root
-        # Aseguramos que el contenedor sea el gestor de espacio principal
         self.contenedor = tk.Frame(root)
         self.contenedor.pack(fill="both", expand=True)
         self.vista_actual = None
 
     def _limpiar_contenedor(self):
-        # Destruimos los widgets anteriores
         for widget in self.contenedor.winfo_children():
             widget.destroy()
         self.vista_actual = None
 
     def _mostrar_vista(self, controlador_clase, *args):
         self._limpiar_contenedor()
-        #Creamos el controlador pasando el contenedor padre
         controlador = controlador_clase(self.contenedor, *args)
 
         if hasattr(controlador, 'vista'):
@@ -54,13 +51,11 @@ class AppController:
     def mostrar_registro_zonas(self):
         from src.controller.zona_controller import ControladorZona
         self._limpiar_contenedor()
-        # Creamos el controlador y él mismo crea y guarda la vista en self.vista
         controlador = ControladorZona(self.contenedor, self)
         controlador.vista.pack(fill="both", expand=True)
         self.contenedor.update()
 
     def mostrar_registro_material(self):
-        self._limpiar_contenedor()
         from src.controller.material_controller import MaterialController
         self._mostrar_vista(MaterialController, self)
 
@@ -69,30 +64,14 @@ class AppController:
 
     def mostrar_registro_fauna(self):
         self._limpiar_contenedor()
-
-        from src.repository.fauna_repository import FaunaRepository
-        from src.services.fauna_service import FaunaService
         from src.controller.fauna_controller import FaunaController
-
-        repo_fauna = FaunaRepository("src/animales.json")
-        servicio_fauna = FaunaService(repo_fauna)
-
         FaunaController(self.contenedor, self)
-
         self.contenedor.update()
 
     def mostrar_registro_basura(self):
         self._limpiar_contenedor()
-
-        from src.repository.fauna_repository import FaunaRepository
-        from src.services.fauna_service import FaunaService
         from src.controller.basura_controller import BasuraController
-
-        repo_fauna = FaunaRepository("src/animales.json")
-        servicio_fauna = FaunaService(repo_fauna)
-
         BasuraController(self.contenedor, self)
-
         self.contenedor.update()
 
     def mostrar_reporte(self):
@@ -105,5 +84,4 @@ class AppController:
         repo_f = FaunaRepository("src/animales.json")
 
         self.controlador_reporte = ReporteController(self.contenedor, self, repo_j, repo_f)
-
         self.contenedor.update()

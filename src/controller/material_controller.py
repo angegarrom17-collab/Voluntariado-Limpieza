@@ -2,6 +2,7 @@ from src.repository.material_repository import MaterialRepository
 from src.services.material_service import MaterialService
 from src.view.material_view import MaterialVista
 
+
 class MaterialController:
     def __init__(self, parent, app_controller):
         self.app_controller = app_controller
@@ -21,7 +22,6 @@ class MaterialController:
 
     def usar_material(self, id_m, cant):
         self.service.usar_material(id_m, int(cant))
-        self.repo.save()
 
     def eliminar_material(self, id_m):
         self.repo.delete(id_m)

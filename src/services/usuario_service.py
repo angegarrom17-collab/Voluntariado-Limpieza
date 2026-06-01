@@ -1,4 +1,6 @@
 import hashlib
+from tkinter import messagebox
+
 from src.model.usuario import Usuario
 
 class UsuarioService:

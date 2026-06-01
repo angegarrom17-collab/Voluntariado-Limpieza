@@ -1,6 +1,7 @@
 import json
 import os
 
+
 class JornadaRepositorio:
     def __init__(self, filename="jornadas.json"):
         self.filename = filename
@@ -31,3 +32,12 @@ class JornadaRepositorio:
         if jornada in self._jornadas:
             self._jornadas.remove(jornada)
             self._save()
+
+    def actualizar(self, jornada):
+        self._load()
+        for indice, registro in enumerate(self._jornadas):
+            if str(registro.get("id_jornada", "")).strip() == str(jornada.id_jornada).strip():
+                self._jornadas[indice] = jornada.to_dict()
+                self._save()
+                return
+        raise ValueError(f"No se encontró jornada con ID {jornada.id_jornada}")

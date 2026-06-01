@@ -1,5 +1,6 @@
 from src.model.material import Material
 
+
 class MaterialService:
     def __init__(self, material_repository):
         self.material_repository = material_repository

@@ -11,7 +11,6 @@ class ControladorZona:
         self.vista.pack(fill="both", expand=True)
 
     def registrar_zona(self, id_zona, nombre_zona, ubicacion, nivel_contaminacion, descripcion):
-
         nombre_zona = str(nombre_zona).strip()
         ubicacion = str(ubicacion).strip()
 
@@ -21,10 +20,17 @@ class ControladorZona:
             raise ValueError("El ID debe ser un número entero válido.")
 
         niveles = ["bajo", "medio", "alto", "critico"]
-        if not nombre_zona: raise ValueError("El nombre no puede estar vacío.")
+        nivel_limpio = nivel_contaminacion.strip().lower()
 
-        z = Zona(id_int, nombre_zona, ubicacion, nivel_contaminacion.strip().lower(), descripcion.strip())
-        self.repo.add(z)
+        if not nombre_zona:
+            raise ValueError("El nombre no puede estar vacío.")
+        if not ubicacion:
+            raise ValueError("La ubicación no puede estar vacía.")
+        if nivel_limpio not in niveles:
+            raise ValueError(f"Nivel de contaminación inválido. Use: {', '.join(niveles)}")
+
+        zona = Zona(id_int, nombre_zona, ubicacion, nivel_limpio, descripcion.strip())
+        self.repo.add(zona)
 
     def get_all_zonas(self):
         return self.repo.get_all()
@@ -34,4 +40,3 @@ class ControladorZona:
 
     def volver_inicio(self):
         self.app_controller.mostrar_principal()
-
