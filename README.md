@@ -1,4 +1,4 @@
-#Sistema de Monitoreo Costero - Protejamos Nuestro Mar
+# Sistema de Monitoreo Costero - Protejamos Nuestro Mar
 
 Este es un sistema web completo para la gestión de voluntariado ambiental en zonas costeras. Permite registrar y administrar jornadas de limpieza, voluntarios, zonas afectadas, fauna marina impactada, materiales de trabajo, basura recolectada y generar reportes de impacto ambiental.
 
