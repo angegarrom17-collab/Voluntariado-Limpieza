@@ -33,3 +33,37 @@ El login es sencillo: el usuario ingresa correo y contraseña, el backend valida
 Estado del proyecto
 
 Este es un proyecto funcional para fines académicos o de demostración. Las áreas de mejora incluyen la implementación de tokens JWT para una autenticación más segura, la configuración de variables de entorno para las credenciales de base de datos, la adición de paginación en las tablas para grandes volúmenes de datos, y la optimización de algunas rutas de archivos estáticos que actualmente están hardcodeadas.
+
+
+
+# Describir el sistema
+La creación de este proyecto nace porque los grupos y organizaciones que hacen limpiezas en las playas usualmente llevan todo el control en papel. Esto hace que sea muy difícil saber si tienen suficientes materiales para ese día, en qué parte de la playa acomodar a los voluntarios, o qué hacer con los datos de la basura que recogen.
+Con este sistema, queremos apoyarlos con una herramienta en digital sencilla para que organicen mejor sus trabajos de limpieza. Al guardar de forma ordenada cuántos kilos de basura se recogen, la organización podrá sacar estadísticas de cuáles zonas están más contaminadas y así poder ver el impacto real de su trabajo.
+
+Identificar módulos
+Módulo de usuarios: Registrar usuarios, validar datos, controlar acceso.
+Módulo de voluntarios: Registrar, consultar, listar voluntarios.
+Módulo de limpieza: Registrar y consultar las zonas, sus voluntarios, las jornadas respectivas; materiales y la cantidad de basura almacenada.
+Módulo fauna afectada: Registrar la especie, estado, consultar registros, generar reportes.
+
+Definir entidades principales
+Usuario (tipo encargado)
+Voluntario
+Zona
+Jornada de limpieza
+Materiales
+Basura recolectada
+Animales afectados
+
+
+
+
+
+
+
+
+
+
+
+
+
